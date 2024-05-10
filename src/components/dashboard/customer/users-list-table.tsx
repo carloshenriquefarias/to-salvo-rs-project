@@ -37,6 +37,13 @@ import { Grid } from '@mui/material';
 import "react-toastify/ReactToastify.min.css";
 import 'react-toastify/dist/ReactToastify.css';
 
+import InputAdornment from '@mui/material/InputAdornment';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import { MagnifyingGlass as MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr/MagnifyingGlass';
+
+import Pagination from '@mui/material/Pagination';
+
+
 export interface Users {
   id: string;
   firstname: string;
@@ -65,8 +72,8 @@ export function UsersListTable() {
       abrigo: 'Faculdade Unopar',
       dataDoCadastro: '09/05/2024',
       cadastradoPor: 'Ana Julia',
-      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/', 
-      logo: <Avatar src={'https://www.agendartecultura.com.br/wp-content/uploads/2022/12/meneson.jpg'} sx={{ height: '150px', width: '150px' }}/>,
+      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/',
+      logo: <Avatar src={'https://www.agendartecultura.com.br/wp-content/uploads/2022/12/meneson.jpg'} sx={{ height: '150px', width: '150px' }} />,
     },
     {
       id: '2',
@@ -77,8 +84,8 @@ export function UsersListTable() {
       abrigo: 'Faculdade Unopar',
       dataDoCadastro: '09/05/2024',
       cadastradoPor: 'Ana Julia',
-      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/', 
-      logo: <Avatar src={'https://www.cnnbrasil.com.br/wp-content/uploads/sites/12/2023/07/IMG_4029.jpg?w=732&h=412&crop=1'} sx={{ height: '150px', width: '150px' }}/>,
+      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/',
+      logo: <Avatar src={'https://www.cnnbrasil.com.br/wp-content/uploads/sites/12/2023/07/IMG_4029.jpg?w=732&h=412&crop=1'} sx={{ height: '150px', width: '150px' }} />,
     }, {
       id: '3',
       name: 'Henrique Jr',
@@ -88,8 +95,8 @@ export function UsersListTable() {
       abrigo: 'Faculdade Unopar',
       dataDoCadastro: '09/05/2024',
       cadastradoPor: 'Ana Julia',
-      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/', 
-      logo: <Avatar src={'https://cajamar.sp.gov.br/noticias/wp-content/uploads/sites/2/2021/07/site-vacinacao-33-anos.png'} sx={{ height: '150px', width: '150px' }}/>,
+      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/',
+      logo: <Avatar src={'https://cajamar.sp.gov.br/noticias/wp-content/uploads/sites/2/2021/07/site-vacinacao-33-anos.png'} sx={{ height: '150px', width: '150px' }} />,
     }, {
       id: '4',
       name: 'Maria Julia',
@@ -99,8 +106,8 @@ export function UsersListTable() {
       abrigo: 'Faculdade Unopar',
       dataDoCadastro: '09/05/2024',
       cadastradoPor: 'Ana Julia',
-      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/', 
-      logo: <Avatar src={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf3nrGZD31Y7wdGv7HZR-b7atmn2KCQDvt_w954nYszg&s'} sx={{ height: '150px', width: '150px' }}/>,
+      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/',
+      logo: <Avatar src={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf3nrGZD31Y7wdGv7HZR-b7atmn2KCQDvt_w954nYszg&s'} sx={{ height: '150px', width: '150px' }} />,
     }, {
       id: '5',
       name: 'Ashley Cole',
@@ -110,8 +117,8 @@ export function UsersListTable() {
       abrigo: 'Faculdade Unopar',
       dataDoCadastro: '09/05/2024',
       cadastradoPor: 'Ana Julia',
-      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/', 
-      logo: <Avatar src={'https://tm.ibxk.com.br/2019/02/17/17124052466014.jpg'} sx={{ height: '150px', width: '150px' }}/>,
+      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/',
+      logo: <Avatar src={'https://tm.ibxk.com.br/2019/02/17/17124052466014.jpg'} sx={{ height: '150px', width: '150px' }} />,
     }, {
       id: '6',
       name: 'Palmer Watson',
@@ -121,8 +128,8 @@ export function UsersListTable() {
       abrigo: 'Faculdade Unopar',
       dataDoCadastro: '09/05/2024',
       cadastradoPor: 'Ana Julia',
-      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/', 
-      logo: <Avatar src={'https://amanha.com.br/images/p/15603/Bruno-de-Oliveira.jpg'} sx={{ height: '150px', width: '150px' }}/>,
+      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/',
+      logo: <Avatar src={'https://amanha.com.br/images/p/15603/Bruno-de-Oliveira.jpg'} sx={{ height: '150px', width: '150px' }} />,
     }, {
       id: '7',
       name: 'Pedro da silva',
@@ -132,8 +139,8 @@ export function UsersListTable() {
       abrigo: 'Faculdade Unopar',
       dataDoCadastro: '09/05/2024',
       cadastradoPor: 'Ana Julia',
-      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/', 
-      logo: <Avatar src={'https://img.freepik.com/fotos-gratis/estilo-de-vida-beleza-e-moda-conceito-de-emocoes-de-pessoas-jovem-gerente-de-escritorio-feminino-asiatico-ceo-com-expressao-satisfeita-em-pe-sobre-um-fundo-branco-sorrindo-com-os-bracos-cruzados-sobre-o-peito_1258-59329.jpg?size=626&ext=jpg&ga=GA1.1.672697106.1715212800&semt=sph'} sx={{ height: '150px', width: '150px' }}/>,
+      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/',
+      logo: <Avatar src={'https://img.freepik.com/fotos-gratis/estilo-de-vida-beleza-e-moda-conceito-de-emocoes-de-pessoas-jovem-gerente-de-escritorio-feminino-asiatico-ceo-com-expressao-satisfeita-em-pe-sobre-um-fundo-branco-sorrindo-com-os-bracos-cruzados-sobre-o-peito_1258-59329.jpg?size=626&ext=jpg&ga=GA1.1.672697106.1715212800&semt=sph'} sx={{ height: '150px', width: '150px' }} />,
     }, {
       id: '8',
       name: 'Dhiane Filho',
@@ -143,8 +150,8 @@ export function UsersListTable() {
       abrigo: 'Faculdade Unopar',
       dataDoCadastro: '09/05/2024',
       cadastradoPor: 'Ana Julia',
-      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/', 
-      logo: <Avatar src={'https://img.freepik.com/fotos-gratis/feliz-jovem-sucedido-gerente-retrato_1262-16187.jpg'} sx={{ height: '150px', width: '150px' }}/>,
+      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/',
+      logo: <Avatar src={'https://img.freepik.com/fotos-gratis/feliz-jovem-sucedido-gerente-retrato_1262-16187.jpg'} sx={{ height: '150px', width: '150px' }} />,
     }, {
       id: '9',
       name: 'Oliver Pam',
@@ -154,8 +161,8 @@ export function UsersListTable() {
       abrigo: 'Faculdade Unopar',
       dataDoCadastro: '09/05/2024',
       cadastradoPor: 'Ana Julia',
-      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/', 
-      logo: <Avatar src={'https://www.cnnbrasil.com.br/wp-content/uploads/sites/12/2023/07/IMG_4032.jpg?w=732&h=412&crop=1'} sx={{ height: '150px', width: '150px' }}/>,
+      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/',
+      logo: <Avatar src={'https://www.cnnbrasil.com.br/wp-content/uploads/sites/12/2023/07/IMG_4032.jpg?w=732&h=412&crop=1'} sx={{ height: '150px', width: '150px' }} />,
     }, {
       id: '10',
       name: 'Antonio Andrade',
@@ -165,8 +172,8 @@ export function UsersListTable() {
       abrigo: 'Faculdade Unopar',
       dataDoCadastro: '09/05/2024',
       cadastradoPor: 'Ana Julia',
-      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/', 
-      logo: <Avatar src={'https://i.pinimg.com/236x/4c/20/2b/4c202b6376037a5fc660a6c7b6e55661.jpg'} sx={{ height: '150px', width: '150px' }}/>,
+      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/',
+      logo: <Avatar src={'https://i.pinimg.com/236x/4c/20/2b/4c202b6376037a5fc660a6c7b6e55661.jpg'} sx={{ height: '150px', width: '150px' }} />,
     },
   ];
 
@@ -253,6 +260,16 @@ export function UsersListTable() {
     return formattedValue;
   };
 
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleSearch = (event: any) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredUsers = users.filter(user =>
+    user.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   useEffect(() => {
     fetchAllUsers();
     setRechargeListUsers(false);
@@ -260,7 +277,38 @@ export function UsersListTable() {
 
   return (
     <Card>
-      <SearchBox/>
+
+      <Grid container spacing={2}>
+        <Grid item xl={12} lg={6} md={6} xs={12}>
+          {/* <SearchBox/> */}
+
+          <Card sx={{ px: 2, py: 2, alignItems: 'space-between', justifyContent: 'center' }}>
+            <OutlinedInput
+              value={searchTerm}
+              onChange={handleSearch}
+              fullWidth
+              placeholder="Digite o nome da pessoa que procura..."
+              startAdornment={
+                <InputAdornment position="start">
+                  <MagnifyingGlassIcon fontSize="var(--icon-fontSize-md)" />
+                </InputAdornment>
+              }
+              sx={{ maxWidth: 'full' }}
+            />
+
+            {/* <Stack py={2}>
+              <Button
+                startIcon={<MagnifyingGlassIcon fontSize="var(--icon-fontSize-md)" />}
+                variant="contained"
+                color="primary"
+                sx={{ backgroundColor: '#1481b8' }}
+              >
+                Clique aqui para realizar a busca
+              </Button>
+            </Stack> */}
+          </Card>
+        </Grid>
+      </Grid>
 
       {/* <Box sx={{ overflowX: 'auto' }} mt={5}>
         <Table sx={{ minWidth: '800px' }}>
@@ -325,64 +373,119 @@ export function UsersListTable() {
         </Table>
       </Box> */}
 
-      <Grid container spacing={2} mt={0}>
-        {users.map((user, index) => (
-          <Grid key={index} item xl={3} lg={6} md={6} xs={12}>
-            <Card
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%',
-                // ":hover": {
-                //   border: '3px solid',
-                //   borderColor: '#00aaff'
-                // }
-                transition: "all 0.25s",
-                transitionTimingFunction: "spring(1 100 10 10)",
-                '&:hover': { transform: 'translateY(-5px)' }
-              }}
-            >
-              <CardContent sx={{ flex: '1 1 auto' }}>
-                <Stack spacing={0}>
-                  <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Stack>
-                      {user.logo}
+      <div>
+        {searchTerm === '' ? (
+          <Grid container spacing={2} mt={0}>
+            {users.map((user, index) => (
+              <Grid key={index} item xl={3} lg={6} md={6} xs={12}>
+                <Card
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '100%',
+                    transition: "all 0.25s",
+                    transitionTimingFunction: "spring(1 100 10 10)",
+                    '&:hover': { transform: 'translateY(-5px)' }
+                  }}
+                >
+                  <CardContent sx={{ flex: '1 1 auto' }}>
+                    <Stack spacing={0}>
+                      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Stack>
+                          {user.logo}
+                        </Stack>
+                      </Box>
+                      <Stack spacing={0} my={2}>
+                        <Typography align="left" variant="body2">
+                          Nome: {user.name}
+                        </Typography>
+                        <Typography align="left" variant="body2">
+                          Idade: {user.idade}
+                        </Typography>
+                        <Typography align="left" variant="body2">
+                          Sexo: {user.sexo}
+                        </Typography>
+                        <Typography align="left" variant="body2">
+                          Local de resgate: {user.localDeResgate}
+                        </Typography>
+                        <Typography align="left" variant="body2">
+                          Abrigo: {user.abrigo}
+                        </Typography>
+                        <Typography align="left" variant="body2">
+                          Data do cadastro: {user.dataDoCadastro}
+                        </Typography>
+                        <Typography align="left" variant="body2">
+                          Cadastrado por: {user.cadastradoPor}
+                        </Typography>
+                      </Stack>
+                      <Button variant="contained" color="primary">
+                        Ver perfil completo
+                      </Button>
                     </Stack>
-                  </Box>
-                  <Stack spacing={0} my={2}>
-                    <Typography align="left" variant="body2">
-                      Nome: {user.name}
-                    </Typography>
-                    <Typography align="left" variant="body2">
-                      Idade: {user.idade}
-                    </Typography>
-                    <Typography align="left" variant="body2">
-                      Sexo: {user.sexo}
-                    </Typography>
-                    <Typography align="left" variant="body2">
-                      Local de resgate: {user.localDeResgate}
-                    </Typography>
-                    <Typography align="left" variant="body2">
-                      Abrigo: {user.abrigo}
-                    </Typography>
-                    <Typography align="left" variant="body2">
-                      Data do cadastro: {user.dataDoCadastro}
-                    </Typography>
-                    <Typography align="left" variant="body2">
-                      Cadastrado por: {user.cadastradoPor}
-                    </Typography>
-                  </Stack>
-
-                  <Button variant="contained" color="primary">
-                    Ver perfil completo
-                  </Button>
-                  
-                </Stack>
-              </CardContent>
-            </Card>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
+        ) : (
+          <Grid container spacing={2} mt={0.5}>
+            {filteredUsers.map((user, index) => (
+              <Grid key={index} item xl={3} lg={6} md={6} xs={12} >
+                <Card
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '100%',
+                    transition: "all 0.25s",
+                    transitionTimingFunction: "spring(1 100 10 10)",
+                    '&:hover': { transform: 'translateY(-5px)' }
+                  }}
+                >
+                  <CardContent sx={{ flex: '1 1 auto' }}>
+                    <Stack spacing={0}>
+                      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Stack>
+                          {user.logo}
+                        </Stack>
+                      </Box>
+                      <Stack spacing={0} my={2}>
+                        <Typography align="left" variant="body2">
+                          Nome: {user.name}
+                        </Typography>
+                        <Typography align="left" variant="body2">
+                          Idade: {user.idade}
+                        </Typography>
+                        <Typography align="left" variant="body2">
+                          Sexo: {user.sexo}
+                        </Typography>
+                        <Typography align="left" variant="body2">
+                          Local de resgate: {user.localDeResgate}
+                        </Typography>
+                        <Typography align="left" variant="body2">
+                          Abrigo: {user.abrigo}
+                        </Typography>
+                        <Typography align="left" variant="body2">
+                          Data do cadastro: {user.dataDoCadastro}
+                        </Typography>
+                        <Typography align="left" variant="body2">
+                          Cadastrado por: {user.cadastradoPor}
+                        </Typography>
+                      </Stack>
+                      <Button variant="contained" color="primary">
+                        Ver perfil completo
+                      </Button>
+                    </Stack>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        )}
+      </div>
+
+      <Stack spacing={2} my={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Pagination count={10} defaultPage={6} variant="outlined" shape="rounded" />
+      </Stack>
 
       <Modal
         open={open}
