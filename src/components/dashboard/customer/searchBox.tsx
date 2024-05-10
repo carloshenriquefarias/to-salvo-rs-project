@@ -16,7 +16,7 @@ export function SearchBox(): React.JSX.Element {
             <MagnifyingGlassIcon fontSize="var(--icon-fontSize-md)" />
           </InputAdornment>
         }
-        sx={{ maxWidth: 'full' }}
+        sx={{ maxWidth: '1180px' }}
       />
     </Card>
   );
