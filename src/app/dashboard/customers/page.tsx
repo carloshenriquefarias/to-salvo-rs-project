@@ -20,7 +20,7 @@ export default function Page(): React.JSX.Element {
     <Stack spacing={3}>
       <Stack direction="column" spacing={1} sx={{ flex: '1 1 auto', width:'100%'}}>
 
-        <Typography variant="h4">List users</Typography>
+        <Typography variant="h4">Lista de pessoas cadastradas</Typography>
 
         <CardActions sx={{ justifyContent: 'space-between', alignItems: 'center', width:'100%'}}>
           <Stack direction="row" sx={{ alignItems: 'center' }}>
@@ -29,8 +29,8 @@ export default function Page(): React.JSX.Element {
             </Stack>
 
             <CardHeader 
-              subheader="Find users you search and do actions with them if you want" 
-              title="All users"
+              subheader="Encontre aqui todas as pessoas que ja realizaram seu cadastro no site" 
+              title="Pessoas encontradas"
             />
           </Stack>
 
@@ -41,7 +41,7 @@ export default function Page(): React.JSX.Element {
               color="primary"  
               href={paths.dashboard.customers.create}      
             >
-              Register user
+              Cadastrar pessoa
             </Button>
           </Stack>
         </CardActions>
