@@ -61,7 +61,7 @@ export function AnimalsListTable() {
   const animals = [
     {
       id: '1',
-      name: 'Carlos Henrique',
+      name: 'Toto',
       microchip: '101010',
       status: 'doente',
       tipoAnimal: 'Cachorro',
