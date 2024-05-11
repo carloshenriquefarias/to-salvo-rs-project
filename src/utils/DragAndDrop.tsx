@@ -24,15 +24,15 @@ const DragAndDrop = ({ onFilesChange, imagesBoat }: any) => {
     },
   });
 
-  const removeFile = (fileToRemove: CustomFile) => {
-    const updatedFiles = files.filter((file) => file !== fileToRemove);
-    setFiles(updatedFiles);
-    onFilesChange(updatedFiles);
-  };
+  // const removeFile = (fileToRemove: CustomFile) => {
+  //   const updatedFiles = files.filter((file) => file !== fileToRemove);
+  //   setFiles(updatedFiles);
+  //   onFilesChange(updatedFiles);
+  // };
 
-  useEffect(() => {
-    console.log(imagesBoat,'imagesBoat');
-  }, []);
+  // useEffect(() => {
+  //   console.log(imagesBoat,'imagesBoat');
+  // }, []);
 
   return (
     <>
@@ -56,7 +56,7 @@ const DragAndDrop = ({ onFilesChange, imagesBoat }: any) => {
             <UploadSimple size={45} />            
             <input {...getInputProps()} />
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <p style={{ margin: 0 }}>Selecione a foto do animal na sua galeria</p>
+              <p style={{ margin: 0 }}>Selecione a foto na sua galeria</p>
             </div>
           </Stack>
         </Box>
