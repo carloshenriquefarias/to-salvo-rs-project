@@ -42,7 +42,8 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import { MagnifyingGlass as MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr/MagnifyingGlass';
 
 import Pagination from '@mui/material/Pagination';
-
+import ModalFilterPeople from './modalFilterPeople';
+import { WhatsappLogo } from '@phosphor-icons/react';
 
 export interface Users {
   id: string;
@@ -55,19 +56,27 @@ export interface Users {
   password: string;
 }
 
+interface Person {
+  id: string;
+  name: string;
+  sexo: string;
+  idade: string;
+  localDeResgate: string;
+  abrigo: string;
+  dataDoCadastro: string;
+  cadastradoPor: string;
+  route: string;
+  logo: JSX.Element;
+}
+
 export function UsersListTable() {
 
-  const peopleProfileImageUrl = 'https://www.aregiao.com.br/media/desabrigados-jan24.jpg';
-  const animalsProfileImageUrl = 'https://ufape.com.br/wp-content/uploads/2023/12/Ufape-Hospital-Veterinario-cachorro-cansado-GS2-MKT-Freepik.jpg';
-  const registerProfileImageUrl = 'https://schippers.com.br/wp-content/uploads/2020/03/cadastro.png';
-  const giveProfileImageUrl = 'https://s2-g1.glbimg.com/IGDssk7UgQ7U9syranZXexKv7gI=/0x0:696x441/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2020/a/x/vYkNz8SP2S3Za3AARNxA/125372306-880713102465839-5794236268828256784-n.jpg';
-
-  const users = [
+  const users: Person[] = [
     {
       id: '1',
-      name: 'Carlos Henrique',
-      sexo: 'Masculino',
-      idade: '32 anos',
+      name: 'Pedrita maria',
+      sexo: 'Feminino',
+      idade: '32',
       localDeResgate: 'Canoas',
       abrigo: 'Faculdade Unopar',
       dataDoCadastro: '09/05/2024',
@@ -78,8 +87,8 @@ export function UsersListTable() {
     {
       id: '2',
       name: 'João Pedro',
-      sexo: 'Masculino',
-      idade: '32 anos',
+      sexo: 'Indefinido',
+      idade: '32',
       localDeResgate: 'Canoas',
       abrigo: 'Faculdade Unopar',
       dataDoCadastro: '09/05/2024',
@@ -90,7 +99,7 @@ export function UsersListTable() {
       id: '3',
       name: 'Henrique Jr',
       sexo: 'Masculino',
-      idade: '32 anos',
+      idade: '30',
       localDeResgate: 'Canoas',
       abrigo: 'Faculdade Unopar',
       dataDoCadastro: '09/05/2024',
@@ -101,7 +110,7 @@ export function UsersListTable() {
       id: '4',
       name: 'Maria Julia',
       sexo: 'Masculino',
-      idade: '32 anos',
+      idade: '33',
       localDeResgate: 'Canoas',
       abrigo: 'Faculdade Unopar',
       dataDoCadastro: '09/05/2024',
@@ -112,7 +121,7 @@ export function UsersListTable() {
       id: '5',
       name: 'Ashley Cole',
       sexo: 'Masculino',
-      idade: '32 anos',
+      idade: '22',
       localDeResgate: 'Canoas',
       abrigo: 'Faculdade Unopar',
       dataDoCadastro: '09/05/2024',
@@ -123,7 +132,7 @@ export function UsersListTable() {
       id: '6',
       name: 'Palmer Watson',
       sexo: 'Masculino',
-      idade: '32 anos',
+      idade: '15',
       localDeResgate: 'Canoas',
       abrigo: 'Faculdade Unopar',
       dataDoCadastro: '09/05/2024',
@@ -134,7 +143,7 @@ export function UsersListTable() {
       id: '7',
       name: 'Pedro da silva',
       sexo: 'Masculino',
-      idade: '32 anos',
+      idade: '25',
       localDeResgate: 'Canoas',
       abrigo: 'Faculdade Unopar',
       dataDoCadastro: '09/05/2024',
@@ -145,7 +154,7 @@ export function UsersListTable() {
       id: '8',
       name: 'Dhiane Filho',
       sexo: 'Masculino',
-      idade: '32 anos',
+      idade: '69',
       localDeResgate: 'Canoas',
       abrigo: 'Faculdade Unopar',
       dataDoCadastro: '09/05/2024',
@@ -156,7 +165,7 @@ export function UsersListTable() {
       id: '9',
       name: 'Oliver Pam',
       sexo: 'Masculino',
-      idade: '32 anos',
+      idade: '35',
       localDeResgate: 'Canoas',
       abrigo: 'Faculdade Unopar',
       dataDoCadastro: '09/05/2024',
@@ -167,7 +176,7 @@ export function UsersListTable() {
       id: '10',
       name: 'Antonio Andrade',
       sexo: 'Masculino',
-      idade: '32 anos',
+      idade: '12',
       localDeResgate: 'Canoas',
       abrigo: 'Faculdade Unopar',
       dataDoCadastro: '09/05/2024',
@@ -181,13 +190,49 @@ export function UsersListTable() {
 
   const [open, setOpen] = React.useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
-  // const [users, setUsers] = useState<Users[]>([]);
+  const [consult, setConsultData] = useState<Person[]>(users);
+  const [searchInitiated, setSearchInitiated] = useState(false);
   const [rechargeListUsers, setRechargeListUsers] = useState(false);
+  const [originalUsers, setOriginalUsers] = useState<Person[]>(users);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const handleOpenModal = (userId: any) => {
-    setSelectedUserId(userId);
+  const handleConsult = (people: Person[]) => {
+    setConsultData(people);
+    console.log('Dados recebidos:', people);
+  };
+
+  const handleOpenModal = () => {
+    // setSelectedUserId(userId);
     setOpen(true);
   };
+
+  const handleShare = async (user: Person) => {
+    try {
+      const shareURL = buildShareURL(user);
+      await navigator.share({
+        title: 'Compartilhar usuário',
+        text: `Veja as informações de ${user.name}`,
+        url: shareURL,
+      });
+    } catch (error) {
+      console.error('Erro ao compartilhar:', error);
+    }
+  };
+
+  const buildShareURL = (user: string) => {
+    const params = new URLSearchParams();
+    Object.entries(user).forEach(([key, value]) => {
+      params.append(key, value);
+    });
+    return `https://suaaplicacao.com/informacoes-usuario?${params.toString()}`;
+  };
+
+  // function handleResetFilter() {
+  //   setSearchTerm('');
+  //   setSexo('');
+  //   setIdade('');
+  //   setAbrigo('');
+  // }
 
   const formatDate = (inputDate: string) => {
     const date = new Date(inputDate);
@@ -260,15 +305,21 @@ export function UsersListTable() {
     return formattedValue;
   };
 
-  const [searchTerm, setSearchTerm] = useState('');
-
   const handleSearch = (event: any) => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredUsers = (term: string) => {
+    setSearchTerm(term);
+    if (term.trim() !== '') {
+      const filtered = originalUsers.filter(user =>
+        user.name.toLowerCase().includes(term.toLowerCase())
+      );
+      setConsultData(filtered);
+    } else {
+      setConsultData(originalUsers);
+    }
+  };
 
   useEffect(() => {
     fetchAllUsers();
@@ -279,13 +330,13 @@ export function UsersListTable() {
     <Card>
 
       <Grid container spacing={2}>
-        <Grid item xl={12} lg={6} md={6} xs={12}>
+        <Grid item xl={12} lg={12} md={12} xs={12}>
           {/* <SearchBox/> */}
 
           <Card sx={{ px: 2, py: 2, alignItems: 'space-between', justifyContent: 'center' }}>
             <OutlinedInput
               value={searchTerm}
-              onChange={handleSearch}
+              onChange={(e) => filteredUsers(e.target.value)}
               fullWidth
               placeholder="Digite o nome da pessoa que procura..."
               startAdornment={
@@ -303,80 +354,28 @@ export function UsersListTable() {
                 color="primary"
                 sx={{ backgroundColor: '#1481b8' }}
               >
-                Clique aqui para realizar a busca
+                Clique aqui para realizar uma busca avançada
               </Button>
             </Stack> */}
+
+            <Stack py={2}>
+              <Button
+                startIcon={<MagnifyingGlassIcon fontSize="var(--icon-fontSize-md)" />}
+                variant="contained"
+                onClick={handleOpenModal}
+                sx={{ backgroundColor: "#1E854E", color: 'white', '&:hover': { backgroundColor: 'darkred' } }}
+              >
+                Clique aqui para realizar uma busca avançada
+              </Button>
+            </Stack>
           </Card>
         </Grid>
       </Grid>
 
-      {/* <Box sx={{ overflowX: 'auto' }} mt={5}>
-        <Table sx={{ minWidth: '800px' }}>
-          <TableHead>
-            <TableRow>
-              <TableCell>First name</TableCell>
-              <TableCell>Last name</TableCell>
-              <TableCell>User name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Phone number</TableCell>
-              <TableCell>Birth date</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {users.length > 0 && users.map((user, index) => (
-              <TableRow hover key={index}>
-                <TableCell>
-                  <Stack sx={{ alignItems: 'center' }} direction="row" spacing={2}>
-                    <Typography variant="subtitle2">{user.firstname}</Typography>
-                  </Stack>
-                </TableCell>
-
-                <TableCell>{user.lastname}</TableCell>
-                <TableCell>{user.username}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{(formatPhoneNumber(user.mobile))}</TableCell>
-                <TableCell>{(formatDate(user.dateofbirth))}</TableCell>
-
-                <TableCell>
-                  <Stack sx={{ alignItems: 'center' }} direction="row" spacing={2}>
-                    <Button
-                      startIcon={<PencilLine fontSize="var(--icon-fontSize-md)" />}
-                      variant="contained"
-                      onClick={() => handleClickEditUser(user.id)}
-                      sx={{
-                        backgroundColor: '#00aaff',
-                        color: 'white',
-                        '&:hover': {
-                          backgroundColor: '#1481b8',
-                          color: 'white',
-                        }
-                      }}
-                    >
-                      Edit
-                    </Button>
-
-                    <Button
-                      startIcon={<Trash fontSize="var(--icon-fontSize-md)" />}
-                      variant="contained"
-                      onClick={() => { handleOpenModal(user.id) }}
-                      sx={{ backgroundColor: '#ff6961', color: 'white', '&:hover': { backgroundColor: 'darkred' } }}
-                    >
-                      Delete
-                    </Button>
-                  </Stack>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Box> */}
-
       <div>
-        {searchTerm === '' ? (
+        {consult.length > 0 ? (
           <Grid container spacing={2} mt={0}>
-            {users.map((user, index) => (
+            {consult.map((user, index) => (
               <Grid key={index} item xl={3} lg={6} md={6} xs={12}>
                 <Card
                   sx={{
@@ -400,7 +399,7 @@ export function UsersListTable() {
                           Nome: {user.name}
                         </Typography>
                         <Typography align="left" variant="body2">
-                          Idade: {user.idade}
+                          Idade: {user.idade} anos
                         </Typography>
                         <Typography align="left" variant="body2">
                           Sexo: {user.sexo}
@@ -418,9 +417,22 @@ export function UsersListTable() {
                           Cadastrado por: {user.cadastradoPor}
                         </Typography>
                       </Stack>
-                      <Button variant="contained" color="primary">
-                        Ver perfil completo
+                      <Button
+                        color="primary"
+                        key={user.id}
+                        sx={{
+                          background: "#1E854E",
+                          color: "#FFF",
+                          '&:hover': {
+                            background: "#25D366",
+                          }
+                        }}
+                        startIcon={<WhatsappLogo fontSize="var(--icon-fontSize-md)" />}
+                        onClick={() => handleShare(user)}
+                      >
+                        Encaminhar informações
                       </Button>
+
                     </Stack>
                   </CardContent>
                 </Card>
@@ -429,7 +441,7 @@ export function UsersListTable() {
           </Grid>
         ) : (
           <Grid container spacing={2} mt={0.5}>
-            {filteredUsers.map((user, index) => (
+            {consult.map((user, index) => (
               <Grid key={index} item xl={3} lg={6} md={6} xs={12} >
                 <Card
                   sx={{
@@ -471,7 +483,7 @@ export function UsersListTable() {
                           Cadastrado por: {user.cadastradoPor}
                         </Typography>
                       </Stack>
-                      <Button variant="contained" color="primary">
+                      <Button variant="contained" color="primary" >
                         Ver perfil completo
                       </Button>
                     </Stack>
@@ -487,10 +499,10 @@ export function UsersListTable() {
         <Pagination count={10} defaultPage={6} variant="outlined" shape="rounded" />
       </Stack>
 
-      <Modal
+      <ModalFilterPeople
         open={open}
         handleClose={handleCloseModal}
-        handleDeleteUserById={handleDeleteUser}
+        onConsult={handleConsult}
       />
 
       <Divider />

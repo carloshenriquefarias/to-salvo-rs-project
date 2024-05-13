@@ -184,7 +184,7 @@ export function Layout({ children }: LayoutProps): React.JSX.Element {
       id: '2',
       title: 'Formas de ajudar',
       description: 'Se você NÃO consegue se deslocar até algum abrigo, AQUI são apresentadas outras formas de ajudar o nosso Rio Grande. Veja também: S.O.S RS - informações completas sobre abrigos e outros apps de ajuda.',
-      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/', 
+      route: '', 
       logo: <Avatar src={'https://static.vecteezy.com/ti/vetor-gratis/p3/3692704-linkedin-american-business-logo-social-media-icon-black-pictogram-vector-illustration-isolated-on-white-backgroud-gratis-vetor.jpg'} variant="square" />,
     },
   ];
@@ -230,7 +230,7 @@ export function Layout({ children }: LayoutProps): React.JSX.Element {
               Se você NÃO consegue se deslocar até algum abrigo, clique no botão abaixo, onde são apresentadas outras formas de ajudar o nosso Rio Grande. Veja também: S.O.S RS - informações completas sobre abrigos e outros apps de ajuda.
             </Typography>
 
-            <Button variant="contained" component="a" href={'integration.route'} target="_blank">
+            <Button variant="contained" component="a" href={'https://www.vakinha.com.br/vaquinha/a-maior-campanha-solidaria-do-rs'} target="_blank">
               Clique aqui
             </Button>
 

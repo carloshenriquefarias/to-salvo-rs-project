@@ -338,7 +338,7 @@ import CardHeader from '@mui/material/CardHeader';
 import CircularProgress from '@mui/material/CircularProgress';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
-import { Grid } from '@mui/material';
+import { FormControlLabel, Grid, Radio, RadioGroup } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
@@ -377,8 +377,11 @@ export function AnimalCreateForm() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState('');
+  const [owner, setOwner] = useState('nao');
 
   const [values, setValues] = useState({
+    nomeDono: '',
+    telefoneDono: '',
     nomeAnimal: '',
     microchip: '',
     especie: '',
@@ -388,6 +391,8 @@ export function AnimalCreateForm() {
   })
 
   const [errors, setErrors] = useState({
+    nomeDono: false,
+    telefoneDono: false,
     nomeAnimal: false,
     microchip: false,
     especie: false,
@@ -397,6 +402,8 @@ export function AnimalCreateForm() {
   })
 
   const validateConfig = {
+    nomeDono: false,
+    telefoneDono: false,
     nomeAnimal: true,
     microchip: false,
     especie: false,
@@ -412,6 +419,8 @@ export function AnimalCreateForm() {
 
   const validateFields = () => {
     const newErrors = {
+      nomeDono: validateConfig.nomeDono ? !values.nomeDono : false,
+      telefoneDono: validateConfig.telefoneDono ? !values.telefoneDono : false,
       nomeAnimal: validateConfig.nomeAnimal ? !values.nomeAnimal : false,
       microchip: validateConfig.microchip ? !values.microchip : false,
       especie: validateConfig.especie ? !values.especie : false,
@@ -569,6 +578,63 @@ export function AnimalCreateForm() {
 
       <Box component="form" noValidate autoComplete="off" onSubmit={handleSubmit}>
         <Grid container spacing={2}>
+
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <Typography variant="h6">Este animal é seu?</Typography>
+          </Grid>
+   
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <RadioGroup
+              aria-label="owner"
+              row
+              name="owner"
+              value={owner}
+              onChange={(e) => {
+                // console.log("Radio button value:", e.target.value);
+                setOwner(e.target.value);
+              }}
+              // sx={{ mb: 2 }}
+            >
+              <FormControlLabel value="nao" control={<Radio />} label="Não, estou apenas cadastrando" />
+              <FormControlLabel value="sim" control={<Radio />} label="Sim, pertence a mim" />
+            </RadioGroup>
+          </Grid>
+         
+          {owner === 'sim' && (
+            <>
+              <Grid item xs={12} sm={12} md={12} lg={12}>
+                <Typography variant="h6" my={1}>Informações do dono</Typography>
+              </Grid>
+
+              <Grid item xs={12} sm={12} md={12} lg={12} >
+                <TextField
+                  fullWidth
+                  error={errors.nomeDono}
+                  id="outlined-nomeAnimal"
+                  name="nomeAnimal"
+                  label="Nome do dono do animal"
+                  value={values.nomeDono}
+                  onChange={handleChange}
+                  helperText={errors.nomeDono ? 'Nome animal é obrigatório.' : ''}
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={12} md={12} lg={12}>
+                <TextField
+                  fullWidth
+                  error={errors.telefoneDono}
+                  id="telefone"
+                  type='tel'
+                  name="telefone"
+                  label="Telefone"
+                  value={formatPhoneNumber(values.telefoneDono)}
+                  onChange={handleChange}
+                  helperText={errors.telefoneDono ? 'Telefone é obrigatório.' : ''}
+                />
+              </Grid>
+            </>
+          )}
+
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <Typography variant="h6" my={1}>Dados do animal</Typography>
           </Grid>
@@ -592,7 +658,7 @@ export function AnimalCreateForm() {
               error={errors.microchip}
               id="filled-microchip"
               name="microchip"
-              type='microchip'
+              type='text'
               label="Microchip"
               value={values.microchip}
               onChange={handleChange}
