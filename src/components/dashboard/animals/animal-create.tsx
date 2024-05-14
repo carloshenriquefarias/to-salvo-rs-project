@@ -124,7 +124,7 @@
 //     async (values: Values): Promise<void> => {
 //       console.log('enviou os dados com sucesso => ', values.abrigo);
 //       // return
-      
+
 //       setIsLoading(true);
 //       // const convertedDate = convertDate(values.birthDate);
 
@@ -357,7 +357,7 @@ import { paths } from '@/paths';
 import { authClient } from '@/lib/auth/client';
 import { useUser } from '@/hooks/use-user';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { api } from '@/services/api';
 
 import { toast } from 'react-toastify';
@@ -378,6 +378,11 @@ export function AnimalCreateForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState('');
   const [owner, setOwner] = useState('nao');
+
+  const [capturedImage, setCapturedImage] = useState('');
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  // const canvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const [values, setValues] = useState({
     nomeDono: '',
@@ -404,11 +409,11 @@ export function AnimalCreateForm() {
   const validateConfig = {
     nomeDono: false,
     telefoneDono: false,
-    nomeAnimal: true,
+    nomeAnimal: false,
     microchip: false,
-    especie: false,
+    especie: true,
     raca: false,
-    abrigo: false,
+    abrigo: true,
     observacoes: false,
   }
 
@@ -494,8 +499,37 @@ export function AnimalCreateForm() {
     return formattedDate;
   };
 
+  const handleStartCapture = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    } catch (error) {
+      console.error('Error accessing camera:', error);
+    }
+  };
+
+  const handleTakePhoto = () => {
+    // const context = canvasRef.current.getContext('2d');
+    // context.drawImage(videoRef.current, 0, 0, 300, 225);
+    // const dataURI = canvasRef.current.toDataURL('image/png');
+    // setCapturedImage(dataURI);
+
+    if (canvasRef.current) {
+      const context = canvasRef.current.getContext('2d');
+      if (context && videoRef.current) {
+        context.drawImage(videoRef.current, 0, 0, 300, 225);
+        const dataURI = canvasRef.current.toDataURL('image/png');
+        setCapturedImage(dataURI);
+      }
+    }
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    console.log('chegou aqui', values)
+    console.log('chegou aqui campos', values)
+    console.log('chegou aqui foto', capturedImage)
+    
     // setIsLoading(true)
     event.preventDefault()
 
@@ -506,19 +540,20 @@ export function AnimalCreateForm() {
       console.log('Formulário inválido')
     }
 
-    // await new Promise(resolve => setTimeout(resolve, 2000));
-    // setIsLoading(false)
-    // handleGoToListUsers()
     return
 
     try {
       const formData = new FormData();
+      formData.append("nomeDono", values.nomeDono);
+      formData.append("telefoneDono", values.telefoneDono);
       formData.append("nomeAnimal", values.nomeAnimal);
       formData.append("microchip", values.microchip);
       formData.append("especie", values.especie);
       formData.append("raca", values.raca);
       formData.append("observacoes", values.observacoes);
       formData.append("abrigo", values.abrigo);
+      formData.append("fotoCamera", capturedImage);
+      // formData.append("fotoGaleria", fotoGaleria);
 
       const registerNewUserEndpoint = '/crud_users/api/v2/user/create';
       const response = await api.post(registerNewUserEndpoint, formData, {
@@ -548,6 +583,10 @@ export function AnimalCreateForm() {
     router.push(paths.dashboard.customers.list);
   };
 
+  useEffect(() => {
+    handleTakePhoto()
+  }, [capturedImage]);
+
   return (
     <Stack spacing={2}>
       <Typography variant="h4">Animais</Typography>
@@ -576,13 +615,17 @@ export function AnimalCreateForm() {
         </Stack>
       </CardActions>
 
+      <div>
+
+      </div>
+
       <Box component="form" noValidate autoComplete="off" onSubmit={handleSubmit}>
         <Grid container spacing={2}>
 
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <Typography variant="h6">Este animal é seu?</Typography>
           </Grid>
-   
+
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <RadioGroup
               aria-label="owner"
@@ -593,13 +636,13 @@ export function AnimalCreateForm() {
                 // console.log("Radio button value:", e.target.value);
                 setOwner(e.target.value);
               }}
-              // sx={{ mb: 2 }}
+            // sx={{ mb: 2 }}
             >
               <FormControlLabel value="nao" control={<Radio />} label="Não, estou apenas cadastrando" />
               <FormControlLabel value="sim" control={<Radio />} label="Sim, pertence a mim" />
             </RadioGroup>
           </Grid>
-         
+
           {owner === 'sim' && (
             <>
               <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -610,8 +653,9 @@ export function AnimalCreateForm() {
                 <TextField
                   fullWidth
                   error={errors.nomeDono}
-                  id="outlined-nomeAnimal"
-                  name="nomeAnimal"
+                  id="outlined-nomeDono"
+                  name="nomeDono"
+                  type='text'
                   label="Nome do dono do animal"
                   value={values.nomeDono}
                   onChange={handleChange}
@@ -623,9 +667,9 @@ export function AnimalCreateForm() {
                 <TextField
                   fullWidth
                   error={errors.telefoneDono}
-                  id="telefone"
+                  id="telefoneDono"
                   type='tel'
-                  name="telefone"
+                  name="telefoneDono"
                   label="Telefone"
                   value={formatPhoneNumber(values.telefoneDono)}
                   onChange={handleChange}
@@ -673,7 +717,7 @@ export function AnimalCreateForm() {
               id="especie"
               type='text'
               name="especie"
-              label="Especie do animal"
+              label="Especie do animal. Ex: cachorro"
               value={values.especie}
               onChange={handleChange}
               helperText={errors.especie ? 'Especie é obrigatório.' : ''}
@@ -687,7 +731,7 @@ export function AnimalCreateForm() {
               id="filled-raca"
               type='text'
               name="raca"
-              label="Raça"
+              label="Raça. Ex: Pitbull"
               value={values.raca}
               onChange={handleChange}
               helperText={errors.raca ? 'Raça é obrigatório.' : ''}
@@ -727,7 +771,7 @@ export function AnimalCreateForm() {
           <CardActions sx={{ justifyContent: 'flex-start', alignItems: 'center', width: '100%' }}>
             <Stack direction="row" sx={{ alignItems: 'center' }}>
               <Stack paddingTop={1.5}>
-                <Dog size={45} />  
+                <Dog size={45} />
               </Stack>
 
               <CardHeader
@@ -737,8 +781,48 @@ export function AnimalCreateForm() {
             </Stack>
           </CardActions>
 
-          <Grid item xs={12} sm={12} lg={12}>
-            <DragAndDrop onFilesSelected={handleFileSelection} />
+
+          <Grid container justifyContent={'center'}>
+            <Grid item xs={12} sm={12} lg={12}>
+              <DragAndDrop onFilesSelected={handleFileSelection} />
+            </Grid>
+          </Grid>
+
+          <Grid container justifyContent={'center'}>
+            <Grid item xs={12} sm={12} lg={6}>
+              <Stack spacing={2} my={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Button
+                  startIcon={<ClipboardText fontSize="var(--icon-fontSize-md)" />}
+                  variant="contained"
+                  onClick={handleStartCapture}
+                  color="primary"
+                >
+                  Clique aqui para abrir sua camera
+                </Button>
+
+                <video ref={videoRef} width="300" height="225" autoPlay></video>
+                <canvas ref={canvasRef} style={{ display: 'none' }} width="300" height="225"></canvas>
+              </Stack>
+            </Grid>
+
+            <Grid item xs={12} sm={12} lg={6}>
+              <Stack spacing={2} my={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Button
+                  startIcon={<ClipboardText fontSize="var(--icon-fontSize-md)" />}
+                  variant="contained"
+                  onClick={handleTakePhoto}
+                  color="primary"
+                >
+                  Tirar foto
+                </Button>
+
+                {capturedImage && (
+                  <div>
+                    <img src={capturedImage} alt="Captured" width="300" height="225" />
+                  </div>
+                )}
+              </Stack>
+            </Grid>
           </Grid>
         </Grid>
 
