@@ -71,6 +71,8 @@ interface Person {
 
 export function UsersListTable() {
 
+  const userDefault = 'https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar.png'
+
   const users: Person[] = [
     {
       id: '1',
@@ -82,7 +84,7 @@ export function UsersListTable() {
       dataDoCadastro: '09/05/2024',
       cadastradoPor: 'Ana Julia',
       route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/',
-      logo: <Avatar src={'https://www.agendartecultura.com.br/wp-content/uploads/2022/12/meneson.jpg'} sx={{ height: '150px', width: '150px' }} />,
+      logo: <Avatar src={''} sx={{ height: '150px', width: '150px' }} />,
     },
     {
       id: '2',
@@ -208,7 +210,7 @@ export function UsersListTable() {
 
   const handleShare = async (user: Person) => {
     try {
-      const shareURL = buildShareURL(user);
+      const shareURL = `https://tosalvo.ong.br/user/${user.id}`;
       await navigator.share({
         title: 'Compartilhar usuário',
         text: `Veja as informações de ${user.name}`,
@@ -224,7 +226,7 @@ export function UsersListTable() {
     Object.entries(user).forEach(([key, value]) => {
       params.append(key, value);
     });
-    return `https://suaaplicacao.com/informacoes-usuario?${params.toString()}`;
+    return `https://tosalvo.ong.br/informacoes-usuario?${params.toString()}`;
   };
 
   // function handleResetFilter() {
@@ -391,7 +393,11 @@ export function UsersListTable() {
                     <Stack spacing={0}>
                       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                         <Stack>
-                          {user.logo}
+                          {user.logo ? (
+                            user.logo
+                          ) : (
+                            <Avatar src={userDefault} sx={{ height: '150px', width: '150px' }} />
+                          )}
                         </Stack>
                       </Box>
                       <Stack spacing={0} my={2}>

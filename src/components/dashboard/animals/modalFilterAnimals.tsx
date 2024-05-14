@@ -24,7 +24,7 @@ interface Animals {
   dataDoCadastro: string;
   cadastradoPor: string;
   route: string;
-  logo: JSX.Element;
+  logo: string;
 }
 
 export default function ModalFilterAnimals({ open, handleClose, onConsult } : ModalProps) {
@@ -46,7 +46,7 @@ export default function ModalFilterAnimals({ open, handleClose, onConsult } : Mo
       dataDoCadastro: '09/05/2024',
       cadastradoPor: 'Ana Julia',
       route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/',
-      logo: <Avatar src={'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSAOnLXSaPbc4K0IId0dSTI050OfwusYAyfQzMiCF6mrwNPVdmN'} sx={{ height: '150px', width: '150px' }} />,
+      logo: 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSAOnLXSaPbc4K0IId0dSTI050OfwusYAyfQzMiCF6mrwNPVdmN',
     },
   ]);
 
