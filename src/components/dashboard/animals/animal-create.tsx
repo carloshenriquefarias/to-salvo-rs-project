@@ -336,26 +336,26 @@ import Button from '@mui/material/Button';
 import CardActions from '@mui/material/CardActions';
 import CardHeader from '@mui/material/CardHeader';
 import CircularProgress from '@mui/material/CircularProgress';
-import FormControl from '@mui/material/FormControl';
-import FormHelperText from '@mui/material/FormHelperText';
+// import FormControl from '@mui/material/FormControl';
+// import FormHelperText from '@mui/material/FormHelperText';
 import { FormControlLabel, Grid, Radio, RadioGroup } from '@mui/material';
-import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
+// import InputLabel from '@mui/material/InputLabel';
+// import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 
-import dayjs from 'dayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+// import dayjs from 'dayjs';
+// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Controller, useForm } from 'react-hook-form';
-import { z as zod } from 'zod';
+// import { zodResolver } from '@hookform/resolvers/zod';
+// import { Controller, useForm } from 'react-hook-form';
+// import { z as zod } from 'zod';
 
 import { paths } from '@/paths';
-import { authClient } from '@/lib/auth/client';
-import { useUser } from '@/hooks/use-user';
+// import { authClient } from '@/lib/auth/client';
+// import { useUser } from '@/hooks/use-user';
 
 import { useEffect, useRef, useState } from 'react';
 import { api } from '@/services/api';
@@ -366,10 +366,11 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.min.css";
 import 'react-toastify/dist/ReactToastify.css';
 
-import { ArrowFatLineLeft, ClipboardText, Dog, IdentificationCard } from '@phosphor-icons/react';
-import { Eye as EyeIcon } from '@phosphor-icons/react/dist/ssr/Eye';
-import { EyeSlash as EyeSlashIcon } from '@phosphor-icons/react/dist/ssr/EyeSlash';
+import { ArrowFatLineLeft, Camera, ClipboardText, Dog, IdentificationCard } from '@phosphor-icons/react';
+// import { Eye as EyeIcon } from '@phosphor-icons/react/dist/ssr/Eye';
+// import { EyeSlash as EyeSlashIcon } from '@phosphor-icons/react/dist/ssr/EyeSlash';
 import DragAndDrop from '@/utils/DragAndDrop';
+// import { borderRadius } from '@mui/system';
 
 export function AnimalCreateForm() {
 
@@ -380,8 +381,9 @@ export function AnimalCreateForm() {
   const [owner, setOwner] = useState('nao');
 
   const [capturedImage, setCapturedImage] = useState('');
+  const [takePhoto, setTakePhoto] = useState(false);
+  const [showTextPhoto, setShowTextPhoto] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  // const canvasRef = useRef(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const [values, setValues] = useState({
@@ -437,19 +439,19 @@ export function AnimalCreateForm() {
     return Object.values(newErrors).every((error) => !error)
   }
 
-  const handleApiError = () => {
-    const title = 'Your password is incorrect. Please try again';
-    toast.error(title, {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
-  };
+  // const handleApiError = () => {
+  //   const title = 'Your password is incorrect. Please try again';
+  //   toast.error(title, {
+  //     position: "top-center",
+  //     autoClose: 5000,
+  //     hideProgressBar: false,
+  //     closeOnClick: true,
+  //     pauseOnHover: true,
+  //     draggable: true,
+  //     progress: undefined,
+  //     theme: "colored",
+  //   });
+  // };
 
   const handleFileSelection = (files: any) => {
     console.log('ta chegando aqui as 12:00 => ');
@@ -472,34 +474,35 @@ export function AnimalCreateForm() {
     return formattedValue;
   };
 
-  const formatRG = (input: string) => {
-    const digits = input.replace(/\D/g, '').slice(0, 9);
-    return digits.replace(/(\d{3})(\d{1,3})?(\d{1,3})?(\d{1,2})?/, (_, p1, p2, p3) => {
-      let result = p1;
-      if (p2) result += `.${p2}`;
-      if (p3) result += `.${p3}`;
-      return result;
-    });
-  }
+  // const formatRG = (input: string) => {
+  //   const digits = input.replace(/\D/g, '').slice(0, 9);
+  //   return digits.replace(/(\d{3})(\d{1,3})?(\d{1,3})?(\d{1,2})?/, (_, p1, p2, p3) => {
+  //     let result = p1;
+  //     if (p2) result += `.${p2}`;
+  //     if (p3) result += `.${p3}`;
+  //     return result;
+  //   });
+  // }
 
-  const formatCPF = (input: string) => {
-    const digits = input.replace(/\D/g, '').slice(0, 11);
-    return digits.replace(/(\d{3})(\d{1,3})?(\d{1,3})?(\d{1,2})?/, (_, p1, p2, p3, p4) => {
-      let result = p1;
-      if (p2) result += `.${p2}`;
-      if (p3) result += `.${p3}`;
-      if (p4) result += `-${p4}`;
-      return result;
-    });
-  }
+  // const formatCPF = (input: string) => {
+  //   const digits = input.replace(/\D/g, '').slice(0, 11);
+  //   return digits.replace(/(\d{3})(\d{1,3})?(\d{1,3})?(\d{1,2})?/, (_, p1, p2, p3, p4) => {
+  //     let result = p1;
+  //     if (p2) result += `.${p2}`;
+  //     if (p3) result += `.${p3}`;
+  //     if (p4) result += `-${p4}`;
+  //     return result;
+  //   });
+  // }
 
-  const convertDate = (dateString: string): string => {
-    const [day, month, year] = dateString.split('/');
-    const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-    return formattedDate;
-  };
+  // const convertDate = (dateString: string): string => {
+  //   const [day, month, year] = dateString.split('/');
+  //   const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+  //   return formattedDate;
+  // };
 
   const handleStartCapture = async () => {
+    setTakePhoto(true);
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       if (videoRef.current) {
@@ -511,11 +514,7 @@ export function AnimalCreateForm() {
   };
 
   const handleTakePhoto = () => {
-    // const context = canvasRef.current.getContext('2d');
-    // context.drawImage(videoRef.current, 0, 0, 300, 225);
-    // const dataURI = canvasRef.current.toDataURL('image/png');
-    // setCapturedImage(dataURI);
-
+    setShowTextPhoto(true);
     if (canvasRef.current) {
       const context = canvasRef.current.getContext('2d');
       if (context && videoRef.current) {
@@ -527,8 +526,8 @@ export function AnimalCreateForm() {
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    console.log('chegou aqui campos', values)
-    console.log('chegou aqui foto', capturedImage)
+    console.log('chegou aqui campos 08:29 =>', values)
+    console.log('chegou aqui foto 08:30 =>', capturedImage)
     
     // setIsLoading(true)
     event.preventDefault()
@@ -621,7 +620,6 @@ export function AnimalCreateForm() {
 
       <Box component="form" noValidate autoComplete="off" onSubmit={handleSubmit}>
         <Grid container spacing={2}>
-
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <Typography variant="h6">Este animal é seu?</Typography>
           </Grid>
@@ -788,11 +786,15 @@ export function AnimalCreateForm() {
             </Grid>
           </Grid>
 
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <Typography variant="h6">Se quiser, use sua camera e tire uma foto atual</Typography>
+          </Grid>
+
           <Grid container justifyContent={'center'}>
-            <Grid item xs={12} sm={12} lg={6}>
+            <Grid item xs={12} sm={12} lg={12}>
               <Stack spacing={2} my={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <Button
-                  startIcon={<ClipboardText fontSize="var(--icon-fontSize-md)" />}
+                  startIcon={<Camera fontSize="var(--icon-fontSize-md)" />}
                   variant="contained"
                   onClick={handleStartCapture}
                   color="primary"
@@ -802,27 +804,43 @@ export function AnimalCreateForm() {
 
                 <video ref={videoRef} width="300" height="225" autoPlay></video>
                 <canvas ref={canvasRef} style={{ display: 'none' }} width="300" height="225"></canvas>
-              </Stack>
-            </Grid>
 
-            <Grid item xs={12} sm={12} lg={6}>
-              <Stack spacing={2} my={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <Button
-                  startIcon={<ClipboardText fontSize="var(--icon-fontSize-md)" />}
-                  variant="contained"
-                  onClick={handleTakePhoto}
-                  color="primary"
-                >
-                  Tirar foto
-                </Button>
-
-                {capturedImage && (
-                  <div>
-                    <img src={capturedImage} alt="Captured" width="300" height="225" />
-                  </div>
+                {takePhoto === true && (           
+                  <Button
+                    startIcon={<Camera fontSize="var(--icon-fontSize-md)" />}
+                    variant="contained"
+                    onClick={handleTakePhoto}
+                    color="primary"
+                  >
+                    Clique aqui para tirar foto
+                  </Button>
                 )}
               </Stack>
             </Grid>
+
+            {/* {showTextPhoto === true && (
+              <Grid item xs={12} sm={12} md={12} lg={12}>
+                <Typography variant="h6">Sua foto selecionada é essa:</Typography>
+              </Grid>
+            )} */}
+
+            {takePhoto === true && (
+              <Grid item xs={12} sm={12} lg={12}>
+                <Stack spacing={2} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  {capturedImage !== '' && (
+                    <>
+                      <Grid item xs={12} sm={12} md={12} lg={12}>
+                        <Typography variant="h6">Sua foto selecionada será essa:</Typography>
+                      </Grid>
+
+                      <div >
+                        <img src={capturedImage} alt="Captured" width="300" height="225"/>
+                      </div>
+                    </>
+                  )}
+                </Stack>
+              </Grid>
+            )}
           </Grid>
         </Grid>
 

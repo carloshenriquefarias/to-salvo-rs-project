@@ -168,7 +168,7 @@ export function LandingPage(): React.JSX.Element {
       title: 'Pessoas',
       description: 'Encontre as pessoas desaparecidas na enchente',
       // logo: <UserPlus size={45} color={iconColor} />,
-      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/', 
+      route: '/dashboard/customers', 
       logo: <Avatar src={peopleProfileImageUrl} sx={{ height: '150px', width: '150px' }}/>,
     },
     {
@@ -176,7 +176,7 @@ export function LandingPage(): React.JSX.Element {
       title: 'Animais',
       description: 'Encontre os animais desaparecidos na enchente',
       // logo: <BookOpenText size={45} color={iconColor} />,
-      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/', 
+      route: '/dashboard/animals', 
       logo: <Avatar src={animalsProfileImageUrl} sx={{ height: '150px', width: '150px' }} />,
     },
     {
@@ -184,24 +184,32 @@ export function LandingPage(): React.JSX.Element {
       title: 'Doações',
       description: 'Contribua e doe alimentos, roupas, água e mais',
       // logo: <PencilLine size={45} color={iconColor} />,
-      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/', 
+      route: '/dashboard/donations', 
       logo: <Avatar src={giveProfileImageUrl} sx={{ height: '150px', width: '150px' }}/>,
     },
-    {
-      id: '4',
-      title: 'Cadastre-se',
-      description: 'Casdastre-se aqui para sabermos sua localização',
-      // logo: <Trash size={45} color={iconColor} />,
-      route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/', 
-      logo: <Avatar src={registerProfileImageUrl} sx={{ height: '150px', width: '150px' }} />,
-    },
+    // {
+    //   id: '4',
+    //   title: 'Cadastre-se',
+    //   description: 'Casdastre-se aqui para sabermos sua localização',
+    //   // logo: <Trash size={45} color={iconColor} />,
+    //   route: 'https://www.linkedin.com/in/carlos-farias-junior-296562235/', 
+    //   logo: <Avatar src={registerProfileImageUrl} sx={{ height: '150px', width: '150px' }} />,
+    // },
   ];
 
-  const handleClickListUsers = async () => {
+  // const handleClickListUsers = async () => {
+  //   setIsLoading(true);
+  //   toastApiResponse(null, 'O Brasil está voces Rio Grande do Sul!');
+  //   await new Promise(resolve => setTimeout(resolve, 2000));
+  //   router.push(`/dashboard/animals`);
+  //   setIsLoading(false);
+  // };
+
+  const handleClickListUsers = async (route: string) => {
     setIsLoading(true);
-    toastApiResponse(null, 'Welcome to CRUD Test CF Partners! We hope you enjoy it a lot! Good luck!');
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    router.push(`/dashboard/customers`);
+    toastApiResponse(null, 'O Brasil está voces Rio Grande do Sul!');
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    router.push(route);
     setIsLoading(false);
   };
 
@@ -254,13 +262,26 @@ export function LandingPage(): React.JSX.Element {
                     Clique aqui
                   </Button> */}
 
-                  <Button variant="contained" color="primary" onClick={handleClickListUsers}>
+                  {/* <Button variant="contained" color="primary" onClick={handleClickListUsers}>
+                    {isLoading ? (
+                      <CircularProgress size={14} color="inherit" />
+                    ) : (
+                      'Clique aqui'
+                    )}
+                  </Button> */}
+
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => handleClickListUsers(integration.route)}
+                  >
                     {isLoading ? (
                       <CircularProgress size={14} color="inherit" />
                     ) : (
                       'Clique aqui'
                     )}
                   </Button>
+
                   
                 </Stack>
               </CardContent>

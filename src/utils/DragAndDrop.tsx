@@ -50,7 +50,7 @@ const DragAndDrop = ({ onFilesChange, imagesBoat }: any) => {
               borderRadius: '5px',
               cursor: 'pointer',
               marginTop: 0,
-              marginBottom: 3,
+              // marginBottom: 3,
             }}
           >      
             <UploadSimple size={45} />            
@@ -62,7 +62,7 @@ const DragAndDrop = ({ onFilesChange, imagesBoat }: any) => {
         </Box>
       </div>
 
-      <Stack spacing={2} my={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <Stack spacing={2} my={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Box display="flex" flexWrap="wrap">
           {(
           //   imagesBoat && files.length === 0) ? (

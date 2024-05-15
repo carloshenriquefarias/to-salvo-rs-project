@@ -236,18 +236,18 @@ export function UsersListTable() {
   //   setAbrigo('');
   // }
 
-  const formatDate = (inputDate: string) => {
-    const date = new Date(inputDate);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-  }
+  // const formatDate = (inputDate: string) => {
+  //   const date = new Date(inputDate);
+  //   const day = date.getDate().toString().padStart(2, '0');
+  //   const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  //   const year = date.getFullYear();
+  //   return `${day}/${month}/${year}`;
+  // }
 
-  const handleClickEditUser = async (userId: string) => {
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    router.push(`/dashboard/customers/edit/${userId}`);
-  };
+  // const handleClickEditUser = async (userId: string) => {
+  //   await new Promise(resolve => setTimeout(resolve, 2000));
+  //   router.push(`/dashboard/customers/edit/${userId}`);
+  // };
 
   const handleCloseModal = () => {
     setOpen(false);
@@ -311,17 +311,35 @@ export function UsersListTable() {
     setSearchTerm(event.target.value);
   };
 
+  // const filteredUsers = (term: string) => {
+  //   setSearchTerm(term);
+  //   if (term.trim() !== '') {
+  //     const filtered = originalUsers.filter(user =>
+  //       user.name.toLowerCase().includes(term.toLowerCase())
+  //     );
+  //     setConsultData(filtered);
+  //   } else {
+  //     setConsultData(originalUsers);
+  //   }
+  // };
+
   const filteredUsers = (term: string) => {
     setSearchTerm(term);
-    if (term.trim() !== '') {
+    term = term.trim().toLowerCase();
+    if (term !== '') {
       const filtered = originalUsers.filter(user =>
-        user.name.toLowerCase().includes(term.toLowerCase())
+        user.name.toLowerCase().includes(term) ||
+        user.idade.includes(term) ||  // Supondo que idade seja string
+        user.sexo.toLowerCase().includes(term) ||
+        user.localDeResgate.toLowerCase().includes(term) ||
+        user.abrigo.toLowerCase().includes(term)
       );
       setConsultData(filtered);
     } else {
       setConsultData(originalUsers);
     }
   };
+  
 
   useEffect(() => {
     fetchAllUsers();
@@ -340,7 +358,7 @@ export function UsersListTable() {
               value={searchTerm}
               onChange={(e) => filteredUsers(e.target.value)}
               fullWidth
-              placeholder="Digite o nome da pessoa que procura..."
+              placeholder="Digite o nome da pessoa, sexo, abrigo, idade que procura..."
               startAdornment={
                 <InputAdornment position="start">
                   <MagnifyingGlassIcon fontSize="var(--icon-fontSize-md)" />
@@ -360,7 +378,7 @@ export function UsersListTable() {
               </Button>
             </Stack> */}
 
-            <Stack py={2}>
+            {/* <Stack py={2}>
               <Button
                 startIcon={<MagnifyingGlassIcon fontSize="var(--icon-fontSize-md)" />}
                 variant="contained"
@@ -369,7 +387,7 @@ export function UsersListTable() {
               >
                 Clique aqui para realizar uma busca avançada
               </Button>
-            </Stack>
+            </Stack> */}
           </Card>
         </Grid>
       </Grid>
@@ -419,9 +437,9 @@ export function UsersListTable() {
                         <Typography align="left" variant="body2">
                           Data do cadastro: {user.dataDoCadastro}
                         </Typography>
-                        <Typography align="left" variant="body2">
+                        {/* <Typography align="left" variant="body2">
                           Cadastrado por: {user.cadastradoPor}
-                        </Typography>
+                        </Typography> */}
                       </Stack>
                       <Button
                         color="primary"
@@ -485,9 +503,9 @@ export function UsersListTable() {
                         <Typography align="left" variant="body2">
                           Data do cadastro: {user.dataDoCadastro}
                         </Typography>
-                        <Typography align="left" variant="body2">
+                        {/* <Typography align="left" variant="body2">
                           Cadastrado por: {user.cadastradoPor}
-                        </Typography>
+                        </Typography> */}
                       </Stack>
                       <Button variant="contained" color="primary" >
                         Ver perfil completo
