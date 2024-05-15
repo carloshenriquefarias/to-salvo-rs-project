@@ -454,7 +454,7 @@ import { paths } from '@/paths';
 import { authClient } from '@/lib/auth/client';
 import { useUser } from '@/hooks/use-user';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { api } from '@/services/api';
 
 import { toast } from 'react-toastify';
@@ -463,7 +463,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.min.css";
 import 'react-toastify/dist/ReactToastify.css';
 
-import { ArrowFatLineLeft, ClipboardText, IdentificationCard } from '@phosphor-icons/react';
+import { ArrowFatLineLeft, Camera, ClipboardText, IdentificationCard } from '@phosphor-icons/react';
 import { Eye as EyeIcon } from '@phosphor-icons/react/dist/ssr/Eye';
 import { EyeSlash as EyeSlashIcon } from '@phosphor-icons/react/dist/ssr/EyeSlash';
 import DragAndDrop from '@/utils/DragAndDrop';
@@ -474,6 +474,12 @@ export function UserCreateForm() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState('');
+
+  const [capturedImage, setCapturedImage] = useState('');
+  const [takePhoto, setTakePhoto] = useState(false);
+  const [showTextPhoto, setShowTextPhoto] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const [values, setValues] = useState({
     nome: '',
@@ -590,8 +596,34 @@ export function UserCreateForm() {
     return formattedDate;
   };
 
+  const handleStartCapture = async () => {
+    setTakePhoto(true);
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    } catch (error) {
+      console.error('Error accessing camera:', error);
+    }
+  };
+
+  const handleTakePhoto = () => {
+    setShowTextPhoto(true);
+    if (canvasRef.current) {
+      const context = canvasRef.current.getContext('2d');
+      if (context && videoRef.current) {
+        context.drawImage(videoRef.current, 0, 0, 300, 225);
+        const dataURI = canvasRef.current.toDataURL('image/png');
+        setCapturedImage(dataURI);
+      }
+    }
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    console.log('chegou aqui', values)
+    console.log('chegou aqui campos 09:49 =>', values)
+    console.log('chegou aqui foto 09:50 =>', capturedImage)
+
     setIsLoading(true)
     event.preventDefault()
 
@@ -810,6 +842,63 @@ export function UserCreateForm() {
             <DragAndDrop onFilesSelected={handleFileSelection} />
           </Grid>
         </Grid>
+
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <Typography variant="h6">Se quiser, use sua camera e tire uma foto atual</Typography>
+          </Grid>
+
+          <Grid container justifyContent={'center'}>
+            <Grid item xs={12} sm={12} lg={12}>
+              <Stack spacing={2} my={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Button
+                  startIcon={<Camera fontSize="var(--icon-fontSize-md)" />}
+                  variant="contained"
+                  onClick={handleStartCapture}
+                  color="primary"
+                >
+                  Clique aqui para abrir sua camera
+                </Button>
+
+                <video ref={videoRef} width="300" height="225" autoPlay></video>
+                <canvas ref={canvasRef} style={{ display: 'none' }} width="300" height="225"></canvas>
+
+                {takePhoto === true && (           
+                  <Button
+                    startIcon={<Camera fontSize="var(--icon-fontSize-md)" />}
+                    variant="contained"
+                    onClick={handleTakePhoto}
+                    color="primary"
+                  >
+                    Clique aqui para tirar foto
+                  </Button>
+                )}
+              </Stack>
+            </Grid>
+
+            {/* {showTextPhoto === true && (
+              <Grid item xs={12} sm={12} md={12} lg={12}>
+                <Typography variant="h6">Sua foto selecionada é essa:</Typography>
+              </Grid>
+            )} */}
+
+            {takePhoto === true && (
+              <Grid item xs={12} sm={12} lg={12}>
+                <Stack spacing={2} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  {capturedImage !== '' && (
+                    <>
+                      <Grid item xs={12} sm={12} md={12} lg={12}>
+                        <Typography variant="h6">Sua foto selecionada será essa:</Typography>
+                      </Grid>
+
+                      <div >
+                        <img src={capturedImage} alt="Captured" width="300" height="225"/>
+                      </div>
+                    </>
+                  )}
+                </Stack>
+              </Grid>
+            )}
+          </Grid>
 
         <Grid container justifyContent={'flex-end'}>
           <Button

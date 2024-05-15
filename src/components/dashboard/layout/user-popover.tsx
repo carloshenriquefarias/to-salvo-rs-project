@@ -34,9 +34,9 @@ export function UserPopover({ anchorEl, onClose, open }: UserPopoverProps): Reac
       slotProps={{ paper: { sx: { width: '240px' } } }}
     >
       <Box sx={{ p: '16px 20px ' }}>
-        <Typography variant="subtitle1">It was a pleasure to have you here!</Typography>
+        {/* <Typography variant="subtitle1">It was a pleasure to have you here!</Typography> */}
         <Typography color="text.secondary" variant="body2">
-          Be free when you wish come back here again. Goodbye!
+          Para voltar para tela principal clique no botao abaixo
         </Typography>
       </Box>
       <Divider />
@@ -45,7 +45,7 @@ export function UserPopover({ anchorEl, onClose, open }: UserPopoverProps): Reac
           <ListItemIcon>
             <SignOutIcon fontSize="var(--icon-fontSize-md)" />
           </ListItemIcon>
-          Sign out
+          Sair
         </MenuItem>
       </MenuList>
     </Popover>
