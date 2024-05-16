@@ -18,10 +18,11 @@ import { toastApiResponse } from '@/utils/Toast';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.min.css";
 
-interface Animals {
+interface Local {
   id: string;
   nome: string;
   cidade: string;
+  endereço: string;
   logo: string;
   // microchip: string;
   // especie: string;
@@ -39,61 +40,67 @@ export function DonationsListTable() {
   const locais = [
     {
       id: '1',
-      nome: 'Santa casa do amparo',
+      nome: 'Paróquia nossa senhora das graças',
       cidade: 'Porto Alegre',
+      endereço: 'Avenida Wenceslau Escobar, Nº 2380, Bairro Tristeza',
       logo: 'https://www.correiodopovo.com.br/image/contentid/policy:1.750858:1677736883/Santa%20Casa.jpeg?a=2%3A1&$p$a=3c60d33',
     },
     {
       id: '2',
-      nome: 'Faculdade Ulbra',
-      cidade: 'Rio branco',
+      nome: 'Enjoy',
+      cidade: 'Canoas',
+      endereço: 'Avenida Cel. Marcos, Nº 1085, Bairro Ipanema',
       logo: 'https://ocorreio.com.br/wp-content/uploads/2019/12/ulbra.jpg',
     },
     {
       id: '3',
-      nome: 'Unopar',
+      nome: 'Portinari',
       cidade: 'Bento gonçalves',
+      endereço: 'Avenida Landel de moura, Nº 430, Bairro Tristeza',
       logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRNZ__itxeBsYNGPIHRTK4jzdsKcmaU27yVixaGpBKkl6cYoIxPswlcGqwcIADPfa60L0&usqp=CAU',
     },
     {
       id: '4',
-      nome: 'Escola bom jesus',
+      nome: 'Anhanguera',
       cidade: 'Canoas',
+      endereço: 'Avenida cavalhada, Nº 4890, Bairro Cavalhada',
       logo: 'https://parauapebas.pa.gov.br/wp-content/uploads/2022/05/5fb22f9f-c84f-4d23-9041-72acc0b45509.jpg',
     },  
     {
       id: '5',
-      nome: 'Santa casa do amparo',
+      nome: 'Paróquia nossa senhora das assunção',
       cidade: 'Porto Alegre',
+      endereço: 'Praça José Assunção, Nº 001, Bairro Vila assunção',
       logo: 'https://www.correiodopovo.com.br/image/contentid/policy:1.750858:1677736883/Santa%20Casa.jpeg?a=2%3A1&$p$a=3c60d33',
     },
     {
       id: '6',
-      nome: 'Faculdade Ulbra',
+      nome: 'Santa Rita de Cassia',
       cidade: 'Rio branco',
+      endereço: 'Rua Jacunda, Nº 345, Bairro Guarujá',
       logo: 'https://ocorreio.com.br/wp-content/uploads/2019/12/ulbra.jpg',
     },
-    {
-      id: '7',
-      nome: 'Unopar',
-      cidade: 'Bento gonçalves',
-      logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRNZ__itxeBsYNGPIHRTK4jzdsKcmaU27yVixaGpBKkl6cYoIxPswlcGqwcIADPfa60L0&usqp=CAU',
-    },
-    {
-      id: '8',
-      nome: 'Escola bom jesus',
-      cidade: 'Canoas',
-      logo: 'https://parauapebas.pa.gov.br/wp-content/uploads/2022/05/5fb22f9f-c84f-4d23-9041-72acc0b45509.jpg',
-    },   
+    // {
+    //   id: '7',
+    //   nome: 'Unopar',
+    //   cidade: 'Bento gonçalves',
+    //   logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRNZ__itxeBsYNGPIHRTK4jzdsKcmaU27yVixaGpBKkl6cYoIxPswlcGqwcIADPfa60L0&usqp=CAU',
+    // },
+    // {
+    //   id: '8',
+    //   nome: 'Escola bom jesus',
+    //   cidade: 'Canoas',
+    //   logo: 'https://parauapebas.pa.gov.br/wp-content/uploads/2022/05/5fb22f9f-c84f-4d23-9041-72acc0b45509.jpg',
+    // },   
   ];
 
   const router = useRouter();
 
   const [open, setOpen] = React.useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
-  const [consult, setConsult] = useState<Animals[]>(locais);
+  const [consult, setConsult] = useState<Local[]>(locais);
   const [rechargeListAnimals, setRechargeListAnimals] = useState(false);
-  const [originalAnimals, setOriginalAnimals] = useState<Animals[]>(locais);
+  const [originalAnimals, setOriginalAnimals] = useState<Local[]>(locais);
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleOpenModal = () => {
@@ -105,7 +112,7 @@ export function DonationsListTable() {
     setOpen(false);
   };
 
-  const handleConsult = (animals: Animals[]) => {
+  const handleConsult = (animals: Local[]) => {
     setConsult(animals);
     console.log('Dados recebidos do bicho:', animals);
   };
@@ -241,7 +248,7 @@ export function DonationsListTable() {
         {consult.length > 0 ? (
           <Grid container spacing={2} mt={0}>
             {consult.map((locais, index) => (
-              <Grid key={index} item xl={3} lg={6} md={6} xs={12}>
+              <Grid key={index} item xl={12} lg={12} md={12} xs={12}>
                 <Card
                   sx={{
                     display: 'flex',
@@ -254,7 +261,7 @@ export function DonationsListTable() {
                 >
                   <CardContent sx={{ flex: '1 1 auto' }}>
                     <Stack spacing={0}>
-                      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                      {/* <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                         <Stack>
                           {locais.logo ? (
                             <Avatar src={locais.logo} sx={{ height: '200px', width: '200px', borderRadius: '10px' }} variant='square'/>
@@ -262,20 +269,24 @@ export function DonationsListTable() {
                             <Avatar src={animalDefault} sx={{ height: '150px', width: '150px' }} variant='square' />
                           )}
                         </Stack>
-                      </Box>
-                      <Stack spacing={0} my={2}>
-                        <Typography align="left" variant="body2" sx={{ color: 'GrayText', textAlign: 'center' }}>
+                      </Box> */}
+
+                      <Stack spacing={0}>
+                        {/* <Typography align="left" variant="body2" sx={{ color: 'GrayText', textAlign: 'center' }}>
                           Nome da institução:
-                        </Typography>
-                        <Typography align="left" variant="h6" sx={{ textAlign: 'center' }}>
-                          {locais.nome}
+                        </Typography> */}
+                        <Typography align="left" variant="body1" sx={{ textAlign: 'left' }}>
+                          Nome da institução: {locais.nome}
                         </Typography>
 
-                        <Typography align="left" variant="body2" sx={{ color: 'GrayText', textAlign: 'center' }} mt={2}>
+                        {/* <Typography align="left" variant="body2" sx={{ color: 'GrayText', textAlign: 'center' }} mt={2}>
                           Cidade:
+                        </Typography> */}
+                        <Typography align="left" variant="body1" sx={{ textAlign: 'left' }} mt={1}>
+                          Cidade: {locais.cidade}
                         </Typography>
-                        <Typography align="left" variant="h6" sx={{ textAlign: 'center' }}>
-                         {locais.cidade}
+                        <Typography align="left" variant="body1" mt={1}>
+                          Endereço: {locais.endereço}
                         </Typography>
                       </Stack>
                     </Stack>
@@ -287,7 +298,7 @@ export function DonationsListTable() {
         ) : (
           <Grid container spacing={2} mt={0.5}>
             {consult.map((locais, index) => (
-              <Grid key={index} item xl={3} lg={6} md={6} xs={12} >
+              <Grid key={index} item xl={12} lg={12} md={12} xs={12}>
                 <Card
                   sx={{
                     display: 'flex',
@@ -300,7 +311,7 @@ export function DonationsListTable() {
                 >
                   <CardContent sx={{ flex: '1 1 auto' }}>
                     <Stack spacing={0}>
-                      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                      {/* <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                         <Stack>
                           {locais.logo ? (
                             <Avatar src={locais.logo} sx={{ height: '150px', width: '150px' }} />
@@ -308,13 +319,16 @@ export function DonationsListTable() {
                             <Avatar src={animalDefault} sx={{ height: '150px', width: '150px' }} />
                           )}
                         </Stack>
-                      </Box>
-                      <Stack spacing={0} my={2}>
+                      </Box> */}
+                      <Stack spacing={0} my={1}>
                         <Typography align="left" variant="body1">
                           Nome da institução: {locais.nome}
                         </Typography>
                         <Typography align="left" variant="body1">
                           Cidade: {locais.cidade}
+                        </Typography>
+                        <Typography align="left" variant="body1">
+                          Endereço: {locais.endereço}
                         </Typography>
                       </Stack>
                     </Stack>
