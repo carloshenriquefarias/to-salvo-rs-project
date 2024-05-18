@@ -39,7 +39,7 @@ export default function Page(): React.JSX.Element {
               startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
               variant="contained"
               color="primary"  
-              href={paths.dashboard.customers.create}      
+              href={paths.dashboard.animals.create}      
             >
               Cadastrar animal
             </Button>
