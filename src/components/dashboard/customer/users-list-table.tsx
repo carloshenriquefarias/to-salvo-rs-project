@@ -15,6 +15,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { MagnifyingGlass as MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr/MagnifyingGlass';
 import { WhatsappLogo } from '@phosphor-icons/react';
+import {  processString } from '@/utils/Helpers';
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface PersonI {
   id: string;
@@ -36,12 +38,28 @@ interface PersonI {
 }
 
 export function UsersListTable() {
+  const ITEMS_PER_PAGE = 12;
 
   const userDefault = 'https://as1.ftcdn.net/v2/jpg/03/53/11/00/1000_F_353110097_nbpmfn9iHlxef4EDIhXB1tdTD0lcWhG9.jpg'
 
   const [allPeopleOriginal, setAllPeopleOriginal] = useState<PersonI[]>([]);
   const [allPeople, setAllPeople] = useState<PersonI[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [page, setPage] = useState(1);
+  const [historySearch, setHistorySearch] = useState('');
+
+  const count = Math.ceil(allPeopleOriginal.length / ITEMS_PER_PAGE);
+
+  const getCurrentPageData = () => {
+    const startIndex = (page - 1) * ITEMS_PER_PAGE;
+    return allPeople.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  };
+
+  const currentPageData = getCurrentPageData();
+
+  const handleChange = (event: any, value: any) => {
+    setPage(value);
+  };
 
   const formatDate = (inputDate: string) => {
     const date = new Date(inputDate);
@@ -75,8 +93,10 @@ export function UsersListTable() {
   const fetchAllUsers = async () => {
     try {
       const response = await api.post('/tosalvo/api/v2/people');
-      const newsResponse = response.data;
-      setAllPeople(newsResponse?.data)
+      const newsResponse = response?.data;
+
+      console.log('newsResponse', newsResponse?.data)
+      setAllPeople( newsResponse?.data)
       setAllPeopleOriginal(newsResponse?.data)
 
     } catch (error) {
@@ -87,19 +107,33 @@ export function UsersListTable() {
 
   const filteredUsers = (term: string) => {
     setSearchTerm(term);
-    term = term.trim().toLowerCase();
-    if (term !== '') {
-      const filtered = allPeople.filter(user =>
-        user.nome.toLowerCase().includes(term) ||
-        user.abrigo.toLowerCase().includes(term) ||
-        user.cidadeDeResgate.toLowerCase().includes(term) ||
-        user.cpf.toLowerCase().includes(term) ||
-        user.dataNascimento.toLowerCase().includes(term)
-      );
-      setAllPeople(filtered);
-    } else {
-      setAllPeople(allPeopleOriginal);
+    term = (term).toLowerCase();
+
+    if (term !== '' && term.length > historySearch.length) {
+        console.log('search historySearch 1:', historySearch);
+        const filtered = allPeople.filter(user =>
+            processString(user.nome).includes(term) ||
+            processString(user.abrigo).includes(term) ||
+            processString(user.cidadeDeResgate).includes(term) ||
+            processString(user.cpf).includes(term) ||
+            processString(user.dataNascimento).includes(term)
+        );
+        setAllPeople(filtered);
+    } else if (term.length < historySearch.length) {
+        console.log('search term 2:', term);
+        const ram = allPeopleOriginal;
+
+        const filtered = ram.filter(user =>
+            processString(user.nome).includes(term) ||
+            processString(user.abrigo).includes(term) ||
+            processString(user.cidadeDeResgate).includes(term) ||
+            processString(user.cpf).includes(term) ||
+            processString(user.dataNascimento).includes(term)
+        );
+        setAllPeople(filtered);
     }
+
+    setHistorySearch(term);
   };
 
   useEffect(() => {
@@ -111,6 +145,7 @@ export function UsersListTable() {
       <Grid container spacing={2}>
         <Grid item xl={12} lg={12} md={12} xs={12}>
           <Card sx={{ px: 2, py: 2, alignItems: 'space-between', justifyContent: 'center' }}>
+            <Typography sx={{py: 2}}>Dados totais cadastrados: {allPeopleOriginal.length}</Typography>
             <OutlinedInput
               value={searchTerm}
               onChange={(e) => filteredUsers(e.target.value)}
@@ -127,10 +162,15 @@ export function UsersListTable() {
         </Grid>
       </Grid>
 
+      { allPeople.length <= 0 ? 
+        <Stack spacing={2} my={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <CircularProgress size={"2rem"}/>
+        </Stack>
+          :
       <div>
         {allPeople.length > 0 ? (
           <Grid container spacing={2} mt={0}>
-            {allPeople.map((user, index) => (
+            {currentPageData.map((user, index) => (
               <Grid key={index} item xl={3} lg={6} md={6} xs={12}>
                 <Card
                   sx={{
@@ -243,9 +283,9 @@ export function UsersListTable() {
           </Grid>
         )}
       </div>
-
+     }
       <Stack spacing={2} my={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <Pagination count={10} defaultPage={6} variant="outlined" shape="rounded" />
+        <Pagination count={count} defaultPage={page} onChange={handleChange} variant="outlined" shape="rounded" color='primary' />
       </Stack>
 
       <Divider />

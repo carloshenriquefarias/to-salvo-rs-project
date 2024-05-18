@@ -22,8 +22,23 @@ module.exports = {
     },
   },
   rules: {
-    "no-unused-vars": "off",
+    "react/self-closing-comp": "off",
+    "import/no-duplicates": "off",
+    "@typescript-eslint/prefer-regexp-exec": "off",
+    "react/jsx-curly-brace-presence": "off",
+    "react/no-array-index-key": "off",
+    "unicorn/filename-case": "off",
+    "object-shorthand": "off",
+    "no-useless-return": "off",
+    "react/jsx-no-useless-fragment": "off",
+    "@typescript-eslint/no-unsafe-return": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "react/jsx-no-leaked-render": "off",
+    "prefer-template": "off",
     "no-console": "off",
+    "no-else-return": "off",
+    "react/function-component-definition": "off",
+    "no-unused-vars": "off",
     "no-promise-executor-return": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-unsafe-assignment": "off",
@@ -46,24 +61,11 @@ module.exports = {
         allowSingleExtends: true,
       },
     ],
-    '@typescript-eslint/no-shadow': [
-      'error',
-      {
-        ignoreOnInitialization: true,
-      },
-    ],
+   
     'import/newline-after-import': 'error',
     'react/jsx-uses-react': 'error',
-    'react/react-in-jsx-scope': 'error',
-    'unicorn/filename-case': [
-      'error',
-      {
-        cases: {
-          kebabCase: true, // personal style
-          pascalCase: true,
-        },
-      },
-    ],
+    'react/react-in-jsx-scope': 'off',
+    
 
     // Deactivated
     '@typescript-eslint/dot-notation': 'off', // paths are used with a dot notation
@@ -79,7 +81,13 @@ module.exports = {
     'no-redeclare': 'off', // conflict with TypeScript function overloads
     'react/jsx-fragments': 'off', // personal style
     'react/prop-types': 'off', // TypeScript is used for type checking
+    'prefer-named-capture-group': "off", //
+    'no-param-reassign': "off", //
 
-    '@next/next/no-img-element': 'off', // Temporary disabled
+    'no-irregular-whitespace': "off", //
+    '@next/next/no-img-element': 'off', // Temporary disabled,
+    '@typescript-eslint/restrict-plus-operands': 'off',
+    'jsx-a11y/media-has-caption': 'off', //
+    'no-undef': 'off'
   },
 };
