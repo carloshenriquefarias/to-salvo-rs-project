@@ -199,80 +199,45 @@ export function Layout({ children }: LayoutProps): React.JSX.Element {
       }}
     >
       <Box sx={{ display: 'flex', flex: '1 1 auto', flexDirection: 'column' }}>
-        <Box sx={{ alignItems: 'center', display: 'flex', flex: '1 1 auto', justifyContent: 'center', p: 3 }}>
+        <Box sx={{ alignItems: 'center', display: 'flex', flex: '1 1 auto', justifyContent: 'center', p: 5 }}>
           <Box sx={{ maxWidth: '650px', width: '100%' }}>{children}</Box>
         </Box>
       </Box>
 
-      <Box
-        sx={{
-          alignItems: 'center',
-          background: 'radial-gradient(50% 50% at 50% 50%, #122647 0%, #090E23 100%)',
-          color: 'var(--mui-palette-common-white)',
-          display: 'flex', flex: '1 1 auto', flexDirection: 'column',
-          justifyContent: 'center',
-          p: 3,
-        }}
-      >
-        <Stack spacing={3} sx={{ alignItems: 'center', justifyContent: 'center', maxWidth: '600px', width: '100%' }} direction={'column'}>
-          <Stack spacing={1}>
-            <Typography color="inherit" variant="h3" sx={{ mt: 1, lineHeight: '1.5em', textAlign: 'center' }}>
-              Ajude o Rio Grande do Sul  {' '}
-            </Typography>
+      <Box sx={{ display: 'flex', flex: '1 1 auto', flexDirection: 'column' }}>
+        <Box 
+          sx={{ 
+            alignItems: 'center', 
+            display: 'flex', 
+            flex: '1 1 auto', 
+            justifyContent: 'center', 
+            p: 5,
+            background: 'radial-gradient(50% 50% at 50% 50%, #122647 0%, #090E23 100%)',
+            color: 'var(--mui-palette-common-white)',
+          }}
+        >
+          <Box sx={{ maxWidth: '650px', width: '100%' }}>
+            <Stack spacing={1}>
+              <Typography color="inherit" variant="h3" sx={{ mt: 1, lineHeight: '1.5em', textAlign: 'center' }}>
+                Ajude o Rio Grande do Sul  {' '}
+              </Typography>
 
-            <Typography color="inherit" sx={{ mt: 1, lineHeight: '1.5em', textAlign: 'center' }} variant="h6" my={3}>
-              Busque pelo nome e encontre familiares e amigos que foram salvos e estão sendo atendidos em algum abrigo contra as enchentes no RS.
-            </Typography>
-
-            <Avatar src={githubProfileImageUrl} sx={{ height: '450px', width: '600px', borderRadius: '10px'}} variant="square" />
-
-            <Typography color="inherit" sx={{ mt: 1, lineHeight: '1.5em', textAlign: 'center' }} variant="h6" my={5}>
-              Se você NÃO consegue se deslocar até algum abrigo, clique no botão abaixo, onde são apresentadas outras formas de ajudar o nosso Rio Grande. Veja também: S.O.S RS - informações completas sobre abrigos e outros apps de ajuda.
-            </Typography>
-
-            <Button variant="contained" component="a" href={'https://www.vakinha.com.br/vaquinha/a-maior-campanha-solidaria-do-rs'} target="_blank">
-              Clique aqui
-            </Button>
-
-            {/* <Typography color="inherit" sx={{ mt: 1, lineHeight: '1.5em', textAlign: 'center' }} variant="h6" mt={10}>
-              Os 142 VOLUNTÁRIOS da plataforma já cadastraram 42.053 PESSOAS RESGATADAS e que estão sem contato com familiares e amigos.
-            </Typography> */}
-            
-
-            
-            {/* <Typography align="center" variant="subtitle1">
-              <Box 
-                component="span" 
-                sx={{ 
-                  mt: 2, 
-                  lineHeight: '1.5em', 
-                  textAlign: 'center', 
-                  color: '#635BFF', 
-                  alignItems: 'center', 
-                  display: 'flex', 
-                  flex: '1 1 auto', 
-                  justifyContent: 'center', 
-                  p: 2
-                }}                
-              >   
+              <Typography color="inherit" sx={{ mt: 1, lineHeight: '1.5em', textAlign: 'center' }} variant="h6" my={3}>
                 Busque pelo nome e encontre familiares e amigos que foram salvos e estão sendo atendidos em algum abrigo contra as enchentes no RS.
-              </Box> 
-            </Typography> */}
-          </Stack>
+              </Typography>
 
-          {/* <Card>
-            <CardContent> */}
+              <Avatar src={githubProfileImageUrl} sx={{ height: 'auto', width: 'auto', borderRadius: '10px'}} variant="square" />
 
+              <Typography color="inherit" sx={{ mt: 1, lineHeight: '1.5em', textAlign: 'center' }} variant="h6" my={5}>
+                Se você NÃO consegue se deslocar até algum abrigo, clique no botão abaixo, onde são apresentadas outras formas de ajudar o nosso Rio Grande. Veja também: S.O.S RS - informações completas sobre abrigos e outros apps de ajuda.
+              </Typography>
 
-              {/* <Stack spacing={1} mt={3} sx={{ textAlign: 'center' }}>
-                <Typography color="text.secondary" variant="body2">
-                  Brazil, Rondonia, Jaci Paraná, 2024
-                </Typography>
-              </Stack>    */}
-
-            {/* </CardContent>
-          </Card> */}
-        </Stack>        
+              <Button variant="contained" component="a" href={'https://www.vakinha.com.br/vaquinha/a-maior-campanha-solidaria-do-rs'} target="_blank">
+                Clique aqui
+              </Button>
+            </Stack>
+          </Box>
+        </Box>
       </Box>
     </Box>
   );

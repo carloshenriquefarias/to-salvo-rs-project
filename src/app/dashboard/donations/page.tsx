@@ -34,17 +34,6 @@ export default function Page(): React.JSX.Element {
               title="Locais de arrecadação"
             />
           </Stack>
-
-          {/* <Stack pt={3}>
-            <Button
-              startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
-              variant="contained"
-              color="primary"  
-              href={paths.dashboard.customers.create}      
-            >
-              Cadastrar pessoa
-            </Button>
-          </Stack> */}
         </CardActions>
       </Stack>
 
