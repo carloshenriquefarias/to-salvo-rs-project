@@ -336,26 +336,13 @@ import Button from '@mui/material/Button';
 import CardActions from '@mui/material/CardActions';
 import CardHeader from '@mui/material/CardHeader';
 import CircularProgress from '@mui/material/CircularProgress';
-// import FormControl from '@mui/material/FormControl';
-// import FormHelperText from '@mui/material/FormHelperText';
 import { FormControlLabel, Grid, Radio, RadioGroup } from '@mui/material';
-// import InputLabel from '@mui/material/InputLabel';
-// import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 
-// import dayjs from 'dayjs';
-// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
-// import { zodResolver } from '@hookform/resolvers/zod';
-// import { Controller, useForm } from 'react-hook-form';
-// import { z as zod } from 'zod';
-
 import { paths } from '@/paths';
-// import { authClient } from '@/lib/auth/client';
-// import { useUser } from '@/hooks/use-user';
 
 import { useEffect, useRef, useState } from 'react';
 import { api } from '@/services/api';
@@ -367,10 +354,7 @@ import "react-toastify/ReactToastify.min.css";
 import 'react-toastify/dist/ReactToastify.css';
 
 import { ArrowFatLineLeft, Camera, ClipboardText, Dog, IdentificationCard } from '@phosphor-icons/react';
-// import { Eye as EyeIcon } from '@phosphor-icons/react/dist/ssr/Eye';
-// import { EyeSlash as EyeSlashIcon } from '@phosphor-icons/react/dist/ssr/EyeSlash';
 import DragAndDrop from '@/utils/DragAndDrop';
-// import { borderRadius } from '@mui/system';
 
 export function AnimalCreateForm() {
 
@@ -382,7 +366,6 @@ export function AnimalCreateForm() {
 
   const [capturedImage, setCapturedImage] = useState('');
   const [takePhoto, setTakePhoto] = useState(false);
-  const [showTextPhoto, setShowTextPhoto] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -439,24 +422,8 @@ export function AnimalCreateForm() {
     return Object.values(newErrors).every((error) => !error)
   }
 
-  // const handleApiError = () => {
-  //   const title = 'Your password is incorrect. Please try again';
-  //   toast.error(title, {
-  //     position: "top-center",
-  //     autoClose: 5000,
-  //     hideProgressBar: false,
-  //     closeOnClick: true,
-  //     pauseOnHover: true,
-  //     draggable: true,
-  //     progress: undefined,
-  //     theme: "colored",
-  //   });
-  // };
-
   const handleFileSelection = (files: any) => {
-    console.log('ta chegando aqui as 12:00 => ');
     setSelectedFiles(files);
-    console.log('selectedFiles 20:00 => ', files);
   };
 
   const formatPhoneNumber = (value: string) => {
@@ -474,33 +441,6 @@ export function AnimalCreateForm() {
     return formattedValue;
   };
 
-  // const formatRG = (input: string) => {
-  //   const digits = input.replace(/\D/g, '').slice(0, 9);
-  //   return digits.replace(/(\d{3})(\d{1,3})?(\d{1,3})?(\d{1,2})?/, (_, p1, p2, p3) => {
-  //     let result = p1;
-  //     if (p2) result += `.${p2}`;
-  //     if (p3) result += `.${p3}`;
-  //     return result;
-  //   });
-  // }
-
-  // const formatCPF = (input: string) => {
-  //   const digits = input.replace(/\D/g, '').slice(0, 11);
-  //   return digits.replace(/(\d{3})(\d{1,3})?(\d{1,3})?(\d{1,2})?/, (_, p1, p2, p3, p4) => {
-  //     let result = p1;
-  //     if (p2) result += `.${p2}`;
-  //     if (p3) result += `.${p3}`;
-  //     if (p4) result += `-${p4}`;
-  //     return result;
-  //   });
-  // }
-
-  // const convertDate = (dateString: string): string => {
-  //   const [day, month, year] = dateString.split('/');
-  //   const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-  //   return formattedDate;
-  // };
-
   const handleStartCapture = async () => {
     setTakePhoto(true);
     try {
@@ -514,7 +454,6 @@ export function AnimalCreateForm() {
   };
 
   const handleTakePhoto = () => {
-    setShowTextPhoto(true);
     if (canvasRef.current) {
       const context = canvasRef.current.getContext('2d');
       if (context && videoRef.current) {
@@ -525,58 +464,127 @@ export function AnimalCreateForm() {
     }
   };
 
+  function base64ToBlob({ base64, mime }: any) {
+    const byteString = atob(base64.split(',')[1]);
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type: mime });
+  }
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    console.log('chegou aqui campos 08:29 =>', values)
-    console.log('chegou aqui foto 08:30 =>', capturedImage)
-    
-    // setIsLoading(true)
     event.preventDefault()
 
     if (validateFields()) {
-      toast.success('Dados salvos com sucesso')
+      setIsLoading(true)
+      
+      const base64Image = capturedImage;
+      const mimeMatch = base64Image.match(/data:(.*);base64,/);
+
+      try {
+        const formData = new FormData();
+        formData.append("nomeDono", values.nomeDono);
+        formData.append("telefoneDono", values.telefoneDono);
+        formData.append("nomeAnimal", values.nomeAnimal);
+        formData.append("microchip", values.microchip);
+        formData.append("especie", values.especie);
+        formData.append("raca", values.raca);
+        formData.append("observacoes", values.observacoes);
+        formData.append("abrigo", values.abrigo);
+        formData.append("situacao", '0');
+
+        if (selectedFiles.length > 0) {
+          const imagemGaleria = new File([selectedFiles[0]], 'image_galeria.jpg', { type: (selectedFiles[0] as any).type });
+          formData.append('fotoGaleria', imagemGaleria);
+        }
+
+        if (mimeMatch) {
+          const mimeType = mimeMatch[1];
+          const imageBlob = base64ToBlob({ base64: base64Image, mime: mimeType });
+          formData.append("fotoCamera", imageBlob);
+        }
+
+        const registerNewUserEndpoint = '/tosalvo/api/v2/animal/create';
+        const response = await api.post(registerNewUserEndpoint, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+
+        if (response.data.status) {
+          toastApiResponse(response, response.data.message);
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 3000));
+
+        setIsLoading(false);
+        router.push(paths.dashboard.animals.list);
+
+      } catch (error) {
+        console.error('Error:', error);
+        toastApiResponse(error, 'An error occurred while connecting to the server, please try again later');
+        setIsLoading(false);
+      }
     } else {
       toast.error('Formulário inválido')
-      console.log('Formulário inválido')
-    }
-
-    return
-
-    try {
-      const formData = new FormData();
-      formData.append("nomeDono", values.nomeDono);
-      formData.append("telefoneDono", values.telefoneDono);
-      formData.append("nomeAnimal", values.nomeAnimal);
-      formData.append("microchip", values.microchip);
-      formData.append("especie", values.especie);
-      formData.append("raca", values.raca);
-      formData.append("observacoes", values.observacoes);
-      formData.append("abrigo", values.abrigo);
-      formData.append("fotoCamera", capturedImage);
-      // formData.append("fotoGaleria", fotoGaleria);
-
-      const registerNewUserEndpoint = '/crud_users/api/v2/user/create';
-      const response = await api.post(registerNewUserEndpoint, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-
-      if (response.data.status) {
-        toastApiResponse(response, response.data.message);
-      }
-
-      await new Promise(resolve => setTimeout(resolve, 3000));
-
-      setIsLoading(false);
-      router.push(paths.dashboard.customers.list);
-
-    } catch (error) {
-      console.error('Error:', error);
-      toastApiResponse(error, 'An error occurred while connecting to the server, please try again later');
-      setIsLoading(false);
     }
     setIsLoading(false)
   }
+
+  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  //   console.log('chegou aqui campos 08:29 =>', values)
+  //   console.log('chegou aqui foto 08:30 =>', capturedImage)
+    
+  //   // setIsLoading(true)
+  //   event.preventDefault()
+
+  //   if (validateFields()) {
+  //     toast.success('Dados salvos com sucesso')
+  //   } else {
+  //     toast.error('Formulário inválido')
+  //     console.log('Formulário inválido')
+  //   }
+
+  //   return
+
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("nomeDono", values.nomeDono);
+  //     formData.append("telefoneDono", values.telefoneDono);
+  //     formData.append("nomeAnimal", values.nomeAnimal);
+  //     formData.append("microchip", values.microchip);
+  //     formData.append("especie", values.especie);
+  //     formData.append("raca", values.raca);
+  //     formData.append("observacoes", values.observacoes);
+  //     formData.append("abrigo", values.abrigo);
+  //     formData.append("fotoCamera", capturedImage);
+  //     // formData.append("fotoGaleria", fotoGaleria);
+
+  //     const registerNewUserEndpoint = '/crud_users/api/v2/user/create';
+  //     const response = await api.post(registerNewUserEndpoint, formData, {
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data'
+  //       }
+  //     });
+
+  //     if (response.data.status) {
+  //       toastApiResponse(response, response.data.message);
+  //     }
+
+  //     await new Promise(resolve => setTimeout(resolve, 3000));
+
+  //     setIsLoading(false);
+  //     router.push(paths.dashboard.customers.list);
+
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //     toastApiResponse(error, 'An error occurred while connecting to the server, please try again later');
+  //     setIsLoading(false);
+  //   }
+  //   setIsLoading(false)
+  // }
 
   const handleGoToListUsers = () => {
     router.push(paths.dashboard.customers.list);
@@ -613,10 +621,6 @@ export function AnimalCreateForm() {
           </Button>
         </Stack>
       </CardActions>
-
-      <div>
-
-      </div>
 
       <Box component="form" noValidate autoComplete="off" onSubmit={handleSubmit}>
         <Grid container spacing={2}>
@@ -782,7 +786,7 @@ export function AnimalCreateForm() {
 
           <Grid container justifyContent={'center'}>
             <Grid item xs={12} sm={12} lg={12}>
-              <DragAndDrop onFilesSelected={handleFileSelection} />
+              <DragAndDrop onFilesChange={handleFileSelection} />
             </Grid>
           </Grid>
 
@@ -818,12 +822,6 @@ export function AnimalCreateForm() {
               </Stack>
             </Grid>
 
-            {/* {showTextPhoto === true && (
-              <Grid item xs={12} sm={12} md={12} lg={12}>
-                <Typography variant="h6">Sua foto selecionada é essa:</Typography>
-              </Grid>
-            )} */}
-
             {takePhoto === true && (
               <Grid item xs={12} sm={12} lg={12}>
                 <Stack spacing={2} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -834,7 +832,7 @@ export function AnimalCreateForm() {
                       </Grid>
 
                       <div >
-                        <img src={capturedImage} alt="Captured" width="300" height="225"/>
+                        <img src={capturedImage} alt="Captured" width="300" height="225" />
                       </div>
                     </>
                   )}

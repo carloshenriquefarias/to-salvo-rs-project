@@ -4,19 +4,18 @@ import * as React from 'react';
 
 import { useEffect, useState } from 'react';
 import { api } from '@/services/api';
-import { Avatar, Box, Button, Card, Divider, CardContent, Grid, Pagination, Stack, Typography} from '@mui/material';
+import { Avatar, Box, Button, Card, CircularProgress, Divider, CardContent, Grid, 
+  InputAdornment, OutlinedInput, Pagination, Stack, Typography 
+} from '@mui/material';
 
 import { toastApiResponse } from '@/utils/Toast';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.min.css";
 import 'react-toastify/dist/ReactToastify.css';
 
-import InputAdornment from '@mui/material/InputAdornment';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import { MagnifyingGlass as MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr/MagnifyingGlass';
 import { WhatsappLogo } from '@phosphor-icons/react';
-import {  processString } from '@/utils/Helpers';
-import CircularProgress from "@mui/material/CircularProgress";
+import { processString } from '@/utils/Helpers';
 
 interface PersonI {
   id: string;
@@ -95,8 +94,8 @@ export function UsersListTable() {
       const response = await api.post('/tosalvo/api/v2/people');
       const newsResponse = response?.data;
 
-      console.log('newsResponse', newsResponse?.data)
-      setAllPeople( newsResponse?.data)
+      // console.log('newsResponse', newsResponse?.data)
+      setAllPeople(newsResponse?.data)
       setAllPeopleOriginal(newsResponse?.data)
 
     } catch (error) {
@@ -110,27 +109,26 @@ export function UsersListTable() {
     term = (term).toLowerCase();
 
     if (term !== '' && term.length > historySearch.length) {
-        console.log('search historySearch 1:', historySearch);
-        const filtered = allPeople.filter(user =>
-            processString(user.nome).includes(term) ||
-            processString(user.abrigo).includes(term) ||
-            processString(user.cidadeDeResgate).includes(term) ||
-            processString(user.cpf).includes(term) ||
-            processString(user.dataNascimento).includes(term)
-        );
-        setAllPeople(filtered);
+      const filtered = allPeople.filter(user =>
+        processString(user.nome).includes(term) ||
+        processString(user.abrigo).includes(term) ||
+        processString(user.cidadeDeResgate).includes(term) ||
+        processString(user.cpf).includes(term) ||
+        processString(user.dataNascimento).includes(term)
+      );
+      setAllPeople(filtered);
     } else if (term.length < historySearch.length) {
-        console.log('search term 2:', term);
-        const ram = allPeopleOriginal;
+      console.log('search term 2:', term);
+      const ram = allPeopleOriginal;
 
-        const filtered = ram.filter(user =>
-            processString(user.nome).includes(term) ||
-            processString(user.abrigo).includes(term) ||
-            processString(user.cidadeDeResgate).includes(term) ||
-            processString(user.cpf).includes(term) ||
-            processString(user.dataNascimento).includes(term)
-        );
-        setAllPeople(filtered);
+      const filtered = ram.filter(user =>
+        processString(user.nome).includes(term) ||
+        processString(user.abrigo).includes(term) ||
+        processString(user.cidadeDeResgate).includes(term) ||
+        processString(user.cpf).includes(term) ||
+        processString(user.dataNascimento).includes(term)
+      );
+      setAllPeople(filtered);
     }
 
     setHistorySearch(term);
@@ -145,7 +143,7 @@ export function UsersListTable() {
       <Grid container spacing={2}>
         <Grid item xl={12} lg={12} md={12} xs={12}>
           <Card sx={{ px: 2, py: 2, alignItems: 'space-between', justifyContent: 'center' }}>
-            <Typography sx={{py: 2}}>Dados totais cadastrados: {allPeopleOriginal.length}</Typography>
+            <Typography sx={{ py: 2 }}>Dados totais cadastrados: {allPeopleOriginal.length}</Typography>
             <OutlinedInput
               value={searchTerm}
               onChange={(e) => filteredUsers(e.target.value)}
@@ -162,128 +160,96 @@ export function UsersListTable() {
         </Grid>
       </Grid>
 
-      { allPeople.length <= 0 ? 
+      {allPeople.length <= 0 ?
         <Stack spacing={2} my={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <CircularProgress size={"2rem"}/>
+          <CircularProgress size={"2rem"} />
         </Stack>
-          :
-      <div>
-        {allPeople.length > 0 ? (
-          <Grid container spacing={2} mt={0}>
-            {currentPageData.map((user, index) => (
-              <Grid key={index} item xl={3} lg={6} md={6} xs={12}>
-                <Card
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: '100%',
-                    transition: "all 0.25s",
-                    transitionTimingFunction: "spring(1 100 10 10)",
-                    '&:hover': { transform: 'translateY(-5px)' }
-                  }}
-                >
-                  <CardContent sx={{ flex: '1 1 auto' }}>
-                    <Stack spacing={0}>
-                      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Stack>
-                          {user.fotoCamera ? (
-                            <Avatar 
-                              src={'https://techsoluctionscold.com.br/tosalvo/'+ user.fotoCamera} 
-                              sx={{ height: '150px', width: '150px' }} 
-                            />
-                          ) : (
-                            <Avatar src={userDefault} sx={{ height: '150px', width: '150px' }} />
-                          )}
-                        </Stack>
-                      </Box>
+        :
+        <div>
+          {allPeople.length > 0 && (
+            <Grid container spacing={2} mt={0}>
+              {currentPageData.map((user, index) => (
+                user.situacao == '1' && (        
+                  <Grid key={index} item xl={3} lg={6} md={6} xs={12}>
+                    <Card
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        height: '100%',
+                        transition: "all 0.25s",
+                        transitionTimingFunction: "spring(1 100 10 10)",
+                        '&:hover': { transform: 'translateY(-5px)' }
+                      }}
+                    >
+                      <CardContent sx={{ flex: '1 1 auto' }}>
+                        <Stack spacing={0}>
+                          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Stack>
+                              {user.fotoCamera ? (
+                                <Avatar
+                                  src={'https://techsoluctionscold.com.br/tosalvo/'+ user.fotoCamera}
+                                  sx={{ height: '150px', width: '150px' }}
+                                />
+                              ) : (
+                                user.fotoGaleria ? (
+                                  <Avatar
+                                    src={'https://techsoluctionscold.com.br/tosalvo/'+ user.fotoGaleria}
+                                    sx={{ height: '150px', width: '150px' }}
+                                  />
+                                ) : (
+                                  <Avatar src={userDefault} sx={{ height: '150px', width: '150px' }} />
+                                  )
+                                )
+                              }
+                            </Stack>
+                          </Box>
 
-                      <Stack spacing={0} my={2}>
-                        <Typography align="left" variant="body2">
-                          Nome: {user.nome}
-                        </Typography>
-                        <Typography align="left" variant="body2">
-                          Local de resgate: {user.cidadeDeResgate}
-                        </Typography>
-                        <Typography align="left" variant="body2">
-                          Abrigo: {user.abrigo}
-                        </Typography>
-                        <Typography align="left" variant="body2">
-                          Data de nascimento: {formatDate(user.dataNascimento)}
-                        </Typography>
-                        <Typography align="left" variant="body2">
-                          Data de cadastro: {formatDate(user.created_at)}
-                        </Typography>
-                      </Stack>
+                          <Stack spacing={0} my={2}>
+                            <Typography align="left" variant="body2">
+                              Nome: {user.nome}
+                            </Typography>
+                            <Typography align="left" variant="body2">
+                              Local de resgate: {user.cidadeDeResgate}
+                            </Typography>
+                            <Typography align="left" variant="body2">
+                              Abrigo: {user.abrigo}
+                            </Typography>
+                            <Typography align="left" variant="body2">
+                              Data de nascimento: {
+                                (user.dataNascimento === ''|| user.dataNascimento === null || user.dataNascimento === '0000-00-00') ? '' : formatDate(user.dataNascimento)
+                              }
+                            </Typography>
+                            <Typography align="left" variant="body2">
+                              Data de cadastro: {formatDate(user.created_at)}
+                            </Typography>
+                          </Stack>
 
-                      <Button
-                        color="primary"
-                        key={user.id}
-                        sx={{
-                          background: "#1E854E",
-                          color: "#FFF",
-                          '&:hover': {
-                            background: "#25D366",
-                          }
-                        }}
-                        startIcon={<WhatsappLogo fontSize="var(--icon-fontSize-md)" />}
-                        onClick={() => handleShare(user)}
-                      >
-                        Encaminhar informações
-                      </Button>
-                    </Stack>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        ) : (
-          <Grid container spacing={2} mt={0.5}>
-            {allPeople.map((user, index) => (
-              <Grid key={index} item xl={3} lg={6} md={6} xs={12} >
-                <Card
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: '100%',
-                    transition: "all 0.25s",
-                    transitionTimingFunction: "spring(1 100 10 10)",
-                    '&:hover': { transform: 'translateY(-5px)' }
-                  }}
-                >
-                  <CardContent sx={{ flex: '1 1 auto' }}>
-                    <Stack spacing={0}>
-                      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Stack>
-                          {user.nome}
+                          <Button
+                            color="primary"
+                            key={user.id}
+                            sx={{
+                              background: "#1E854E",
+                              color: "#FFF",
+                              '&:hover': {
+                                background: "#25D366",
+                              }
+                            }}
+                            startIcon={<WhatsappLogo fontSize="var(--icon-fontSize-md)" />}
+                            onClick={() => handleShare(user)}
+                          >
+                            Encaminhar informações
+                          </Button>
                         </Stack>
-                      </Box>
-                      
-                      <Stack spacing={0} my={2}>
-                        <Typography align="left" variant="body2">
-                          Nome: {user.nome}
-                        </Typography>
-                        <Typography align="left" variant="body2">
-                          Local de resgate: {user.cidadeDeResgate}
-                        </Typography>
-                        <Typography align="left" variant="body2">
-                          Abrigo: {user.abrigo}
-                        </Typography>
-                        <Typography align="left" variant="body2">
-                          Data de nascimento: {formatDate(user.dataNascimento)}
-                        </Typography>
-                        <Typography align="left" variant="body2">
-                          Data de cadastro: {formatDate(user.created_at)}
-                        </Typography>
-                      </Stack>
-                    </Stack>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        )}
-      </div>
-     }
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                )
+              ))}
+            </Grid>
+          )} 
+        </div>
+      }
+
       <Stack spacing={2} my={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Pagination count={count} defaultPage={page} onChange={handleChange} variant="outlined" shape="rounded" color='primary' />
       </Stack>
