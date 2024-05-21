@@ -55,8 +55,8 @@ export function LandingPage(): React.JSX.Element {
 
   const handleClickListUsers = async (route: string) => {
     setIsLoading(true);
-    toastApiResponse(null, 'O Brasil está voces Rio Grande do Sul!');
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    toastApiResponse(null, 'O Brasil está vocês Rio Grande do Sul!');
+    // await new Promise(resolve => setTimeout(resolve, 100));
     router.push(route);
     setIsLoading(false);
   };

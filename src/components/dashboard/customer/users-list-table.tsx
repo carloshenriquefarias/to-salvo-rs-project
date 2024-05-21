@@ -94,7 +94,6 @@ export function UsersListTable() {
       const response = await api.post('/tosalvo/api/v2/people');
       const newsResponse = response?.data;
 
-      // console.log('newsResponse', newsResponse?.data)
       setAllPeople(newsResponse?.data)
       setAllPeopleOriginal(newsResponse?.data)
 
@@ -169,7 +168,7 @@ export function UsersListTable() {
           {allPeople.length > 0 && (
             <Grid container spacing={2} mt={0}>
               {currentPageData.map((user, index) => (
-                user.situacao == '1' && (        
+                user.situacao === '1' && (        
                   <Grid key={index} item xl={3} lg={6} md={6} xs={12}>
                     <Card
                       sx={{

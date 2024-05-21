@@ -1,5 +1,5 @@
 export const paths = {
-  home: '/dashboard/customers',
+  home: '/landing-page',
   dashboard: {    
     customers: 
     { 
