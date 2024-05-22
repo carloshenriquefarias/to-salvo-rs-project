@@ -4,8 +4,9 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { api } from '@/services/api';
 
-import { Avatar, Box, Card, CircularProgress, Divider, CardContent, Grid, 
-  InputAdornment, OutlinedInput, Pagination, Stack, Typography 
+import {
+  Avatar, Box, Card, CircularProgress, Divider, CardContent, Grid,
+  InputAdornment, OutlinedInput, Pagination, Stack, Typography
 } from '@mui/material';
 
 import { MagnifyingGlass as MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr/MagnifyingGlass';
@@ -39,12 +40,13 @@ export function AnimalsListTable() {
 
   const animalDefault = 'https://images.vexels.com/media/users/3/235658/isolated/preview/ab14b963565a4c5ab27169d90c341994-animais-silhueta-21.png'
   const ITEMS_PER_PAGE = 12;
-  
+
   const [allAnimals, setAllAnimals] = useState<Animals[]>([]);
   const [allAnimalsOriginal, setAllAnimalsOriginal] = useState<Animals[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
   const [historySearch, setHistorySearch] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const getCurrentPageData = () => {
     const startIndex = (page - 1) * ITEMS_PER_PAGE;
@@ -61,14 +63,16 @@ export function AnimalsListTable() {
 
   const fetchAllAnimals = async () => {
     try {
+      setLoading(true);
       const response = await api.post('/tosalvo/api/v2/animals');
       const newsResponse = response.data;
-      console.log('newsResponse => 21:57', newsResponse);
       setAllAnimals(newsResponse?.data)
       setAllAnimalsOriginal(newsResponse?.data)
+      setLoading(false);
 
     } catch (error) {
       console.error('Error:', error);
+      setLoading(false);
       toastApiResponse(error, 'It is not possible to load animals details');
     }
   };
@@ -89,11 +93,11 @@ export function AnimalsListTable() {
   };
 
   const filteredAnimals = (term: string) => {
+    setLoading(true);
     setSearchTerm(term);
     term = (term).toLowerCase();
 
     if (term !== '' && term.length > historySearch.length) {
-      console.log('search historySearch 1:', historySearch);
       const filtered = allAnimals.filter(animal =>
         processString(animal.nomeAnimal).includes(term) ||
         processString(animal.nomeDono).includes(term) ||
@@ -104,7 +108,6 @@ export function AnimalsListTable() {
       );
       setAllAnimals(filtered);
     } else if (term.length < historySearch.length) {
-      console.log('search term 2:', term);
       const ram = allAnimalsOriginal;
 
       const filtered = ram.filter(animal =>
@@ -119,6 +122,7 @@ export function AnimalsListTable() {
     }
 
     setHistorySearch(term);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -146,16 +150,20 @@ export function AnimalsListTable() {
         </Grid>
       </Grid>
 
-      {allAnimals.length <= 0 ?
+      {loading ?
         <Stack spacing={2} my={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <CircularProgress size={"2rem"} />
         </Stack>
         :
         <div>
-          {allAnimals.length > 0 && (
+          {allAnimals.length === 0 && loading === false ? (
+            <div style={{ padding: "1rem", display: "flex", justifyContent: 'center' }}>
+              Registro não encontrado!
+            </div>
+          ) : (
             <Grid container spacing={2} mt={0} px={1}>
               {currentPageData.map((animal, index) => (
-                // animal.situacao === '1' && (
+                animal.situacao === '1' && (
                   <Grid key={index} item xl={3} lg={6} md={6} xs={12}>
                     <Card
                       sx={{
@@ -170,33 +178,26 @@ export function AnimalsListTable() {
                       <CardContent sx={{ flex: '1 1 auto' }}>
                         <Stack spacing={0}>
                           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                            {/* <Stack>
-                              {animal.logo ? (
-                                <Avatar src={animal.logo} sx={{ height: '150px', width: '150px' }} />
-                              ) : (
-                                <Avatar src={animalDefault} sx={{ height: '150px', width: '150px' }} />
-                              )}
-                            </Stack> */}
-
                             <Stack>
                               {animal.fotoGaleria ? (
                                 <Avatar
-                                  src={'https://techsoluctionscold.com.br/tosalvo/'+ animal.fotoGaleria}
+                                  src={'https://techsoluctionscold.com.br/tosalvo/' + animal.fotoGaleria}
                                   sx={{ height: '150px', width: '150px' }}
                                 />
                               ) : (
                                 animal.fotoCamera ? (
                                   <Avatar
-                                    src={'https://techsoluctionscold.com.br/tosalvo/'+ animal.fotoCamera}
+                                    src={'https://techsoluctionscold.com.br/tosalvo/' + animal.fotoCamera}
                                     sx={{ height: '150px', width: '150px' }}
                                   />
                                 ) : (
                                   <Avatar src={animalDefault} sx={{ height: '150px', width: '150px' }} />
-                                  )
                                 )
+                              )
                               }
                             </Stack>
                           </Box>
+
                           <Stack spacing={0} my={2}>
                             {animal.nomeDono && (
                               <>
@@ -229,7 +230,7 @@ export function AnimalsListTable() {
                       </CardContent>
                     </Card>
                   </Grid>
-                // )
+                )
               ))}
             </Grid>
           )}
