@@ -46,6 +46,7 @@ export function UsersListTable() {
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
   const [historySearch, setHistorySearch] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const count = Math.ceil(allPeopleOriginal.length / ITEMS_PER_PAGE);
 
@@ -91,19 +92,23 @@ export function UsersListTable() {
 
   const fetchAllUsers = async () => {
     try {
+      setLoading(true);
       const response = await api.post('/tosalvo/api/v2/people');
       const newsResponse = response?.data;
 
       setAllPeople(newsResponse?.data)
       setAllPeopleOriginal(newsResponse?.data)
+      setLoading(false);
 
     } catch (error) {
       console.error('Error:', error);
+      setLoading(false);
       toastApiResponse(error, 'It is not possible to load users details');
     }
   };
 
   const filteredUsers = (term: string) => {
+    setLoading(true);
     setSearchTerm(term);
     term = (term).toLowerCase();
 
@@ -115,6 +120,7 @@ export function UsersListTable() {
         processString(user.cpf).includes(term) ||
         processString(user.dataNascimento).includes(term)
       );
+      console.log('search term 1:', term);
       setAllPeople(filtered);
     } else if (term.length < historySearch.length) {
       console.log('search term 2:', term);
@@ -130,7 +136,10 @@ export function UsersListTable() {
       setAllPeople(filtered);
     }
 
+    console.log('search term nothing:', term);
+    
     setHistorySearch(term);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -159,13 +168,18 @@ export function UsersListTable() {
         </Grid>
       </Grid>
 
-      {allPeople.length <= 0 ?
+      {loading ?
         <Stack spacing={2} my={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <CircularProgress size={"2rem"} />
         </Stack>
+
         :
         <div>
-          {allPeople.length > 0 && (
+          {allPeople.length === 0 && loading === false ? (
+            <div style={{padding: "1rem", display: "flex", justifyContent: 'center'}}>
+              Registro não encontrado!
+              </div> 
+              ): (
             <Grid container spacing={2} mt={0}>
               {currentPageData.map((user, index) => (
                 user.situacao === '1' && (        
