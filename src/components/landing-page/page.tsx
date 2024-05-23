@@ -74,6 +74,9 @@ export function LandingPage(): React.JSX.Element {
           Após a tragédia, milhares de pessoas ainda não foram encontradas, assim como seus animais. 
           Ajude-nos a encontrá-los, cadastre-se ou forneça informações que possam ajudar neste momento tão difícil!
         </Typography>
+        <Typography variant="h6" sx={{ mt: 1, lineHeight: '1.5em', textAlign: 'center' }}>
+          Entre em contato conosco pelo email: <a href="mailto:contato@estousalvo.com">contato@estousalvo.com</a>
+        </Typography>
       </Stack>
 
       <Grid container spacing={2} mt={0}>
