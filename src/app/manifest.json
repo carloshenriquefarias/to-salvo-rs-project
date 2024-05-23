@@ -1,0 +1,21 @@
+{
+  "name": "Estou Salvo - Rio Grande do Sul",
+  "short_name": "estousalvo",
+  "description": "Ajuda para população encontrar as pessoas nos abrigos pelo Rio Grande do Sul",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/?source=pwa",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000"
+}
